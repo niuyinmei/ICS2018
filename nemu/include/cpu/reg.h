@@ -1,4 +1,4 @@
-#ifndef __REG_H__b
+#ifndef __REG_H__bi
 #define __REG_H__
 
 #include "common.h"
@@ -13,7 +13,9 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * cpu.gpr[1]._8[1], we will get the 'ch' register. Hint: Use `union'.
  * For more details about the register encoding scheme, see i386 manual.
  */
-
+/*
+ * Reorganized. Use Union.
+*/
 typedef struct {
   union {
     union{

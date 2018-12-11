@@ -49,6 +49,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
+  /* Added, implementation not finished*/
   {"si", "Execution step by step", cmd_si},
   {"info", "Show status", cmd_info},
   //{"p", "Expression value", cmd_p},
