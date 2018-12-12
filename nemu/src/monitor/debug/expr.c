@@ -120,3 +120,9 @@ uint32_t expr(char *e, bool *success) {
 
   return 0;
 }
+
+/* TODO: Expression evaluation*/
+uint32_t eval(int p, int q) {
+  
+}
+
