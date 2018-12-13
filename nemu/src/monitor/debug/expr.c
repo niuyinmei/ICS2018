@@ -368,9 +368,9 @@ uint32_t eval(int p, int q) {
 	if(op_type != TK_MINUS || op_type != TK_POINTER)
 		printf("%c\n",op_type);
 	else if(op_type == TK_MINUS)
-		printf("m\n");
+		printf("minus\n");
 	else if(op_type == TK_POINTER)
-		printf("p\n");
+		printf("pointer\n");
 	if(invalid == 1)	return 0;
     if (p == op) {
       uint32_t val1 = eval(op + 1, q);
