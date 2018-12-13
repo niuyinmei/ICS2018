@@ -5,13 +5,16 @@
  */
 #include <sys/types.h>
 #include <regex.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 enum {
 
   TK_NOTYPE = 256, TK_EQ,
   /*TODO: Add more token types */
   /*Finished*/
-  TK_AND, TK_OR, TK_NOT, TK_DEC, TK_HEX, TK_REG, TK_VAR
+  TK_AND, TK_OR, TK_NOT, TK_DEC, TK_HEX, 
+  TK_REG,  TK_MINUS, TK_POINTER
 };
 
 static struct rule {
@@ -23,26 +26,26 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},    			// spaces
-  {"\\+", '+'},         			// plus
-  {"\\-", '-'},					// minus
-  {"\\*", '*'},					// mult
-  {"/", '/'},					// divide
-  {"\\(", '('},         			// left parenthesis
-  {"\\)", ')'},         			// right parenthesis
-  {"&&", TK_AND},				// and
-  {"\\|\\|", TK_OR},				// or
-  {"!", TK_NOT},        			// not
-  {"[0-9][0-9]*", TK_DEC},			// decimal
-  {"0[xX][0-9][0-9]+", TK_HEX},			// hexadecimal
-  {"\\$[a-zA-Z][a-zA-Z]+", TK_REG},		// register
-  {"[0-9a-zA-Z_][0-9a-zA-Z_]*", TK_VAR},	// variable 
-  {"==", TK_EQ}         // equal
+  {" +", TK_NOTYPE},						// spaces
+  {"\\+", '+'},								// plus
+  {"\\-", '-'},								// minus
+  {"\\*", '*'},								// mult
+  {"/", '/'},								// divide
+  {"\\(", '('},								// left parenthesis
+  {"\\)", ')'},								// right parenthesis
+  {"&&", TK_AND},							// and
+  {"\\|\\|", TK_OR},						// or
+  {"!", TK_NOT},							// not
+  {"[0-9][0-9]*", TK_DEC},					// decimal
+  {"0[xX][0-9][0-9]+", TK_HEX},				// hexadecimal
+  {"\\$[a-zA-Z][a-zA-Z]+", TK_REG},			// register 
+  {"==", TK_EQ}								// equal
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
 
 static regex_t re[NR_REGEX];
+int invalid;	//1 when regex is invalid
 
 /* Rules are used for many times.
  * Therefore we compile them only once before any usage.
@@ -80,7 +83,7 @@ static bool make_token(char *e) {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-        char *substr_start = e + position;
+	    char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
@@ -91,11 +94,31 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
+        if(nr_token == 32 || substr_len > 31){
+		  return false;
+		}
 
-        switch (rules[i].token_type) {
-          default: TODO();
+        if(rules[i].token_type == TK_NOTYPE)	break;
+		tokens[nr_token].type = rules[i].token_type;
+        switch (rules[i].token_type){
+		  /* Put numbers into tokens. */
+          case TK_DEC: case TK_HEX:{
+		    strncpy(tokens[nr_token].str, substr_start, substr_len);
+			tokens[nr_token].str[substr_len] = '\0';
+			break;
+		  }
+		  /* Removing the $ before the register */
+		  case TK_REG:{
+		    strncpy(tokens[nr_token].str, substr_start + 1, substr_len - 1);
+			tokens[nr_token].str[substr_len - 1] = '\0';
+			break;
+		  }
+		  default:{
+		    ;
+		  } 
+		  
         }
-
+        ++nr_token;
         break;
       }
     }
@@ -109,20 +132,269 @@ static bool make_token(char *e) {
   return true;
 }
 
+
+/* TODO: Check if surrounded by parentheses */
+bool check_parentheses(int p, int q) {
+  int count = 0;
+  bool not_match = false;
+  for(int i = p; i <= q; i++) {
+    if(tokens[i].type == '(')	++count;
+    else if(tokens[i].type == ')'){
+      --count;
+      if(count < 0) {
+        printf("Parentheses does not match.\n");
+		invalid = 1;
+        return 0;
+      }
+      else if (count == 0 && i != q){
+        not_match = true;
+      }
+    }
+  }
+  
+  if(count > 0){
+    printf("Parentheses does not match.\n");
+    invalid = 1;
+	return 0;
+  }
+  if(tokens[p].type == '('  && tokens[q].type == ')' && !not_match)
+    return true;
+  else	return false;
+}
+
+/* TODO: Check if the token is an operator*/
+bool is_operator(int type) {
+  switch(type) {
+    case '+': case '-': case '*': case '/':
+    case TK_EQ: case TK_AND: case TK_OR: 
+    case TK_MINUS: case TK_POINTER:
+      return true;
+    default:
+      return false;
+  }
+}
+
+/* TODO: Check the operator is in an parentheses*/
+bool inside_par(int pos, int begin, int end) {
+  int count = 0;
+  while(begin < pos) {
+    if(tokens[begin].type == '(')	++count;
+    else if (tokens[begin].type == ')')	--count;
+    ++begin;
+  }
+  if (count > 0) return true;
+  else return false;
+}
+
+/* TODO: Check priority of the operator. */
+int check_priority(int type1, int type2){
+  int priority1, priority2;
+  switch(type1){
+    case TK_NOT: case TK_POINTER:
+	  priority1 = 1;
+	case '*': case '/':
+	  priority1 = 2;
+    case '+': case '-':
+	  priority1 = 3;
+	case TK_EQ:
+	  priority1 = 4;
+	case TK_AND:
+	  priority1 = 5;
+	case TK_OR:
+	  priority1 = 6;
+	default: assert(0);  
+  }
+  switch(type2){
+    case TK_NOT: case TK_POINTER:
+	  priority2 = 1;
+	case '*': case '/':
+	  priority2 = 2;
+    case '+': case '-':
+	  priority2 = 3;
+	case TK_EQ:
+	  priority2 = 4;
+	case TK_AND:
+	  priority2 = 5;
+	case TK_OR:
+	  priority2 = 6;
+	default: assert(0);  
+  }
+  return priority1 - priority2;
+}
+
+enum{LEFT, RIGHT};
+
+/* TODO: Check associativity. */
+int associate(int type){
+  switch(type) {
+	case '+': case '-': case '*': case '/':
+	case TK_EQ: case TK_AND: case TK_OR:
+	  return LEFT;
+	case TK_NOT: case TK_POINTER:
+      return RIGHT;
+	default:  assert(0);
+  }
+}
+
+/* TODO: Find the dominant operator in an expression. */
+int dominant_operator(int p, int q) {
+  int i = p;
+  while((i <= q && !is_operator(tokens[i].type)) || inside_par(i, p, q)){
+    ++i;
+  }
+  if(i > q) {
+    printf("Syntax Error.\n");
+	return 0;
+  }
+  int dominant_pos = i;
+  for(++i; i <= q; ++i){
+    if(!is_operator(tokens[i].type) || inside_par(i, p, q))
+	  continue;
+
+	  int cur_type = tokens[i].type;
+	  int dominant_type = tokens[dominant_pos].type;
+	  if(check_priority(cur_type, dominant_type) > 0 ||
+		  (check_priority(cur_type, dominant_type) == 0 && 
+		  associate(cur_type) == LEFT))
+	    dominant_pos = i;
+  }
+  return dominant_pos;
+}
+
+/* TODO: Read the content in the register*/
+uint32_t read_reg(char *reg_name){
+  for(char *pstr = reg_name; *pstr != '\0'; ++pstr){
+    *pstr = tolower(*pstr);
+  }
+  int i;
+  for(i = R_EAX; i <= R_EDI; i++){
+    /* searching through eax-edi */
+	if(!strcmp(reg_name, regsl[i])){
+	  return reg_l(i);
+	}  
+  }
+  for(i = R_AX; i <= R_DI; i++){
+    /* searching through ax-di */
+	if(!strcmp(reg_name, regsw[i])){
+	  return reg_w(i);
+	}
+  }
+  for(i = R_AL; i <= R_BH; i++){
+    /* searching through al-bh */
+	if(!strcmp(reg_name, regsb[i])){
+	  return reg_b(i);
+	}
+  }
+  if(!strcmp(reg_name, "eip")){
+    return cpu.eip;
+  }
+  else{
+    printf("Wrong register input.\n");
+	invalid = 1;
+	return 0;
+  }
+}
+
+
+
+/* TODO: Evaluating the expression. */
+uint32_t eval(int p, int q) {
+ if(p > q) {
+    /* Bad Expression */
+    printf("Bad Expression.\n");
+	invalid = 1;
+    return 0;
+  }
+  else if (p == q) {
+    /* Single Token */
+	switch(tokens[p].type){
+	  case TK_DEC:{	//when the token is a decimal number
+	    return atoi(tokens[p].str);
+	  }
+	  case TK_HEX:{
+	    uint32_t temp;
+        sscanf(tokens[p].str, "%x", &temp);
+	    return temp;
+ 	  }
+	  case TK_REG:{
+	    return read_reg(tokens[p].str);
+ 	  }
+	}
+  }
+  else if (check_parentheses(p, q) == true) {
+    return eval(p + 1, q - 1);
+  }
+  else {
+    uint32_t  op = dominant_operator(p, q);
+    uint32_t  op_type = tokens[op].type;
+    if (p == op) {
+      uint32_t val1 = eval(op + 1, q);
+      switch(op_type) {
+        case TK_MINUS:		return -val1;
+        case TK_POINTER:	return vaddr_read(val1, 4);
+        default:			assert(0);
+      }
+    }
+    else {
+      uint32_t val1 = eval(p, op - 1);
+      uint32_t val2 = eval(op + 1, q);
+      switch(op_type) {
+        case '+':		return val1 + val2;
+        case '-':		return val1 - val2;
+        case '*':		return val1 * val2;
+        case '/':		return val1 / val2;
+		case TK_AND:	return val1 && val2;
+		case TK_OR:		return val1 || val2; 
+        default:		assert(0);
+	  }
+    }
+  }
+  invalid = 1;
+  return 0;
+}
+
 uint32_t expr(char *e, bool *success) {
-  if (!make_token(e)) {
+  if(!make_token(e)) {
     *success = false;
     return 0;
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  invalid = 0;
+  
+  /* Step 1: Distinguishing '*' and '-'. */
+  if(tokens[0].type == '*'){
+    tokens[0].type = TK_POINTER;
+  }
+  if(tokens[0].type == '-'){
+    tokens[0].type = TK_MINUS;
+  }
+  for(int i = 1; i < nr_token; i++){
+    int prev_type = tokens[i - 1].type;
+	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) || 
+	              (prev_type == TK_REG) || (prev_type == ')');
+    if(!is_num){
+      if(tokens[i].type == '*'){
+	    tokens[i].type = TK_POINTER;
+	  }
+	  if(tokens[i].type == '-'){
+	    tokens[i].type = TK_MINUS;
+	  }
+	}
+  }
+  
+  /* Step 2: Evaluating the regular expression. */
+  uint32_t temp_result = eval(0, nr_token - 1);
+  
+  /* Step 3: Test whether any mismatch occurred. */
+  if(invalid == 1){
+	*success = false;
+    return 0;
+  }
+  else{
+    return temp_result;
+  }
 
   return 0;
-}
-
-/* TODO: Expression evaluation*/
-uint32_t eval(int p, int q) {
-  
 }
 
