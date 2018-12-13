@@ -413,6 +413,7 @@ uint32_t expr(char *e, bool *success) {
   if(tokens[0].type == '-'){
     tokens[0].type = TK_MINUS;
   }
+  printf("nr_token: %d\n",nr_token);
   for(int i = 1; i < nr_token; i++){
     int prev_type = tokens[i - 1].type;
 	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) || 
