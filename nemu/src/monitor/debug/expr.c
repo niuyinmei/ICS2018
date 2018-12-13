@@ -420,6 +420,7 @@ uint32_t expr(char *e, bool *success) {
     if(!is_num){
       if(tokens[i].type == '*'){
 	    tokens[i].type = TK_POINTER;
+		printf("pointer at %d\n",i);
 	  }
 	  if(tokens[i].type == '-'){
 		tokens[i].type = TK_MINUS;
