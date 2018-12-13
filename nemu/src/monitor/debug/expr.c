@@ -95,10 +95,6 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        if(nr_token == 32 || substr_len > 31){
-		  return false;
-		}
-
         if(rules[i].token_type == TK_NOTYPE)	break;
 		tokens[nr_token].type = rules[i].token_type;
         switch (rules[i].token_type){
