@@ -356,13 +356,6 @@ uint32_t eval(int p, int q) {
 	return 0;
   }*/
   else {
-    if(tokens[p].type == '*'){
-	  tokens[p].type = TK_POINTER;
-	}
-	if(tokens[p].type == '-'){
-	  printf("asd\n");
-	  tokens[p].type = TK_MINUS;
-	}
 	uint32_t  op = dominant_operator(p, q);
     uint32_t  op_type = tokens[op].type;
 	if(op_type != TK_MINUS || op_type != TK_POINTER)
