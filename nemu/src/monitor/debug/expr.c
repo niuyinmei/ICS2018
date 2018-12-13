@@ -268,7 +268,7 @@ int dominant_operator(int p, int q) {
     ++i;
   }
   if(i > q) {
-    printf("Syntax Error.\n");
+    printf("Syntax Error at %d.\n",q);
 	invalid = 1;
 	return 0;
   }
