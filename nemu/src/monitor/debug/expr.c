@@ -7,6 +7,7 @@
 #include <regex.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 
 enum {
 
@@ -327,6 +328,7 @@ uint32_t eval(int p, int q) {
  if(p > q) {
     /* Bad Expression */
     printf("Bad Expression.\n");
+	pause();
 	invalid = 1;
     return 0;
   }
