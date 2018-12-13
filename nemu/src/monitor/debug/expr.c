@@ -358,6 +358,7 @@ uint32_t eval(int p, int q) {
   else {
     uint32_t  op = dominant_operator(p, q);
     uint32_t  op_type = tokens[op].type;
+	if(invalid == 1)	return 0;
     if (p == op) {
       uint32_t val1 = eval(op + 1, q);
       switch(op_type) {
