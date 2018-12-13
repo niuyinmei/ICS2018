@@ -388,6 +388,7 @@ uint32_t eval(int p, int q) {
 	  }
     }
   }
+  printf("error.\n");
   invalid = 1;
   return 0;
 }
