@@ -190,33 +190,57 @@ bool inside_par(int pos, int begin, int end) {
 int check_priority(int type1, int type2){
   int priority1, priority2;
   switch(type1){
-    case TK_NOT: case TK_POINTER:
+    case TK_NOT: case TK_POINTER:{
 	  priority1 = 1;
-	case '*': case '/':
+	  break;
+	}
+	case '*': case '/':{
 	  priority1 = 2;
-    case '+': case '-':
+	  break;
+    }
+    case '+': case '-':{
 	  priority1 = 3;
-	case TK_EQ:
+	  break;
+	}
+	case TK_EQ:{
 	  priority1 = 4;
-	case TK_AND:
+	  break;
+	}
+	case TK_AND:{
 	  priority1 = 5;
-	case TK_OR:
+	  break;
+	}
+	case TK_OR:{
 	  priority1 = 6;
+	  break;
+	}
 	default: assert(0);  
   }
   switch(type2){
-    case TK_NOT: case TK_POINTER:
+    case TK_NOT: case TK_POINTER:{
 	  priority2 = 1;
-	case '*': case '/':
+	  break;
+	}
+	case '*': case '/':{
 	  priority2 = 2;
-    case '+': case '-':
+	  break;
+	}
+    case '+': case '-':{
 	  priority2 = 3;
-	case TK_EQ:
+	  break;
+	}
+	case TK_EQ:{
 	  priority2 = 4;
-	case TK_AND:
+	  break;
+	}
+	case TK_AND:{
 	  priority2 = 5;
-	case TK_OR:
+	  break;
+	}
+	case TK_OR:{
 	  priority2 = 6;
+	  break;
+	}
 	default: assert(0);  
   }
   return priority1 - priority2;
