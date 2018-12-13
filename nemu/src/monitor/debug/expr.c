@@ -255,7 +255,7 @@ int associate(int type){
 	case '+': case '-': case '*': case '/':
 	case TK_EQ: case TK_AND: case TK_OR:
 	  return LEFT;
-	case TK_NOT: case TK_POINTER:
+	case TK_NOT: case TK_POINTER: case TK_MINUS:
       return RIGHT;
 	default:  assert(0);
   }
