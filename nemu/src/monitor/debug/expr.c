@@ -392,9 +392,11 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
   else{
+	*success = true;
     return temp_result;
   }
 
   return 0;
+  
 }
 
