@@ -365,7 +365,12 @@ uint32_t eval(int p, int q) {
 	}
 	uint32_t  op = dominant_operator(p, q);
     uint32_t  op_type = tokens[op].type;
-	printf("%c\n",op_type);
+	if(op_type != TK_MINUS || op_type != TK_POINTER)
+		printf("%c\n",op_type);
+	else if(op_type == TK_MINUS)
+		printf("m\n");
+	else if(op_type == TK_POINTER)
+		printf("p\n");
 	if(invalid == 1)	return 0;
     if (p == op) {
       uint32_t val1 = eval(op + 1, q);
