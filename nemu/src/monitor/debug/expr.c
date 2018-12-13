@@ -356,7 +356,13 @@ uint32_t eval(int p, int q) {
 	return 0;
   }*/
   else {
-    uint32_t  op = dominant_operator(p, q);
+    if(tokens[p].type == '*'){
+	  tokens[p].type = TK_POINTER;
+	}
+	if(tokens[p].type == '-'){
+	  tokens[p].type = TK_MINUS;
+	}
+	int32_t  op = dominant_operator(p, q);
     uint32_t  op_type = tokens[op].type;
 	if(invalid == 1)	return 0;
     if (p == op) {
@@ -410,7 +416,7 @@ uint32_t expr(char *e, bool *success) {
 	    tokens[i].type = TK_POINTER;
 	  }
 	  if(tokens[i].type == '-'){
-	    tokens[i].type = TK_MINUS;
+		tokens[i].type = TK_MINUS;
 	  }
 	}
   }
