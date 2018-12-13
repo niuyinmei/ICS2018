@@ -357,8 +357,8 @@ uint32_t eval(int p, int q) {
       switch(op_type) {
         case TK_MINUS:		{return -val1; break;}
         case TK_POINTER:	{return vaddr_read(val1, 4);break;}
-        default:			assert(0);
-      }
+        default:;
+	  }
     }
     else {
       uint32_t val1 = eval(p, op - 1);
