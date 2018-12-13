@@ -264,7 +264,7 @@ int dominant_operator(int p, int q) {
   }
   printf("\n");	
   int i = p;
-  while((i <= q && !is_operator(tokens[i].type)) || inside_par(i, p, q)){
+  while(i <= q && (!is_operator(tokens[i].type) || inside_par(i, p, q))){
     ++i;
   }
   if(i > q) {
