@@ -428,7 +428,6 @@ uint32_t expr(char *e, bool *success) {
   
   /* Step 3: Test whether any mismatch occurred. */
   if(invalid == 1){
-	*success = false;
     return 0;
   }
   else{
