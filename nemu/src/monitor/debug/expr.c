@@ -251,6 +251,7 @@ enum{LEFT, RIGHT};
 
 /* TODO: Check associativity. */
 int associate(int type){
+  printf("%d\n", type);
   switch(type) {
 	case '+': case '-': case '*': case '/':
 	case TK_EQ: case TK_AND: case TK_OR:
