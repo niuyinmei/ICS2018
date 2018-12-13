@@ -39,6 +39,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
+static int cmd_p(char *args);
 static struct {
   char *name;
   char *description;
@@ -52,7 +53,7 @@ static struct {
   /* Added, implementation not finished*/
   {"si", "Execution step by step", cmd_si},
   {"info", "Show status", cmd_info},
-  //{"p", "Expression value", cmd_p},
+  {"p", "Expression value", cmd_p},
   //{"x", "Scan memory", cmd_x}.
   //{"w", "Set watchpoint", cmd_w},
   //{"d", "Delete watchpoint", cmd_d}
@@ -121,6 +122,16 @@ static int cmd_info(char *args){
     return 0;
   }
 }
+
+static int cmd_p(char *args){
+  bool success;
+  uint32_t res = expr(args, &success);
+  if(success){
+    printf("%u\n", res);  
+  }
+  return 0;
+}
+
 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
