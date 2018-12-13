@@ -258,7 +258,7 @@ int associate(int type){
 	  return LEFT;
 	case TK_NOT: case TK_POINTER: case TK_MINUS:
       return RIGHT;
-	default:  assert(0);
+	default:	return 3;
   }
 }
 
