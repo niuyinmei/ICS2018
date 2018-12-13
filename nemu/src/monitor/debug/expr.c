@@ -261,7 +261,10 @@ int associate(int type){
 int dominant_operator(int p, int q) {
   printf("%d, %d\n",p,q);
   for(int ix = p; ix <= q; ix++){
-    printf("%s ", tokens[ix].str);
+	if(!is_operator(tokens[ix].type))
+		printf("%s ", tokens[ix].str);
+	else
+		printf("%c ", tokens[ix].type);
   }
   printf("\n");	
   int i = p;
