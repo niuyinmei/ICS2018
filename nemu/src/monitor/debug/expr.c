@@ -418,6 +418,9 @@ uint32_t expr(char *e, bool *success) {
     int prev_type = tokens[i - 1].type;
 	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) || 
 	              (prev_type == TK_REG) || (prev_type == ')');
+	if(i == 32) {
+	  printf("32:%d\n", is_num);
+	}
     if(!is_num){
       if(tokens[i].type == '*'){
 	    tokens[i].type = TK_POINTER;
