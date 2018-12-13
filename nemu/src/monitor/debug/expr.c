@@ -259,6 +259,7 @@ int associate(int type){
 
 /* TODO: Find the dominant operator in an expression. */
 int dominant_operator(int p, int q) {
+  printf("%d, %d\n",p,q);
   for(int ix = p; ix <= q; ix++){
     printf("%s ", tokens[ix].str);
   }
