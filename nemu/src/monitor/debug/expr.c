@@ -360,6 +360,7 @@ uint32_t eval(int p, int q) {
 	  tokens[p].type = TK_POINTER;
 	}
 	if(tokens[p].type == '-'){
+	  printf("asd\n");
 	  tokens[p].type = TK_MINUS;
 	}
 	int32_t  op = dominant_operator(p, q);
