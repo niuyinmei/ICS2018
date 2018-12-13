@@ -268,6 +268,7 @@ int dominant_operator(int p, int q) {
   }
   if(i > q) {
     printf("Syntax Error.\n");
+	invalid = 1;
 	return 0;
   }
   int dominant_pos = i;
@@ -354,8 +355,8 @@ uint32_t eval(int p, int q) {
     if (p == op) {
       uint32_t val1 = eval(op + 1, q);
       switch(op_type) {
-        case TK_MINUS:		return -val1;
-        case TK_POINTER:	return vaddr_read(val1, 4);
+        case TK_MINUS:		{return -val1; break;}
+        case TK_POINTER:	{return vaddr_read(val1, 4);break;}
         default:			assert(0);
       }
     }
