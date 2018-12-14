@@ -64,7 +64,6 @@ void init_regex() {
     }
   }
 }
-
 typedef struct token {
   int type;
   char str[32];
@@ -258,21 +257,12 @@ int associate(int type){
 }
 
 /* TODO: Find the dominant operator in an expression. */
-int dominant_operator(int p, int q) {
-  printf("%d, %d\n",p,q);
-  for(int ix = p; ix <= q; ix++){
-	if(!is_operator(tokens[ix].type))
-		printf("%s ", tokens[ix].str);
-	else
-		printf("%c ", tokens[ix].type);
-  }
-  printf("\n");	
+int dominant_operator(int p, int q) {	
   int i = p;
   while(i <= q && (!is_operator(tokens[i].type) || inside_par(i, p, q))){
     ++i;
   }
   if(i > q) {
-    printf("Syntax Error at %d.\n",q);
 	invalid = 1;
 	return 0;
   }
@@ -319,7 +309,6 @@ uint32_t read_reg(char *reg_name){
     return cpu.eip;
   }
   else{
-    printf("Wrong register input.\n");
 	invalid = 1;
 	return 0;
   }
@@ -331,8 +320,6 @@ uint32_t read_reg(char *reg_name){
 uint32_t eval(int p, int q) {
  if(p > q) {
     /* Bad Expression */
-    printf("Bad Expression.\n");
-	pause();
 	invalid = 1;
     return 0;
   }
@@ -362,12 +349,6 @@ uint32_t eval(int p, int q) {
   else {
 	uint32_t  op = dominant_operator(p, q);
     uint32_t  op_type = tokens[op].type;
-	if(op_type != TK_MINUS || op_type != TK_POINTER)
-		printf("%c\n",op_type);
-	else if(op_type == TK_MINUS)
-		printf("minus\n");
-	else if(op_type == TK_POINTER)
-		printf("pointer\n");
 	if(invalid == 1)	return 0;
     if (p == op) {
       uint32_t val1 = eval(op + 1, q);
@@ -391,14 +372,12 @@ uint32_t eval(int p, int q) {
 	  }
     }
   }
-  printf("error.\n");
   invalid = 1;
   return 0;
 }
 
 uint32_t expr(char *e, bool *success) {
   if(!make_token(e)) {
-	printf("dsa");
     *success = false;
     return 0;
   }
@@ -413,18 +392,13 @@ uint32_t expr(char *e, bool *success) {
   if(tokens[0].type == '-'){
     tokens[0].type = TK_MINUS;
   }
-  printf("nr_token: %d\n",nr_token);
   for(int i = 1; i < nr_token; i++){
     int prev_type = tokens[i - 1].type;
 	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) || 
 	              (prev_type == TK_REG) || (prev_type == ')');
-	if(i == 32) {
-	  printf("32:%d\n", is_num);
-	}
     if(!is_num){
       if(tokens[i].type == '*'){
 	    tokens[i].type = TK_POINTER;
-		printf("pointer at %d\n",i);
 	  }
 	  if(tokens[i].type == '-'){
 		tokens[i].type = TK_MINUS;
