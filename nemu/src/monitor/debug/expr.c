@@ -138,7 +138,6 @@ bool check_parentheses(int p, int q) {
     else if(tokens[i].type == ')'){
       --count;
       if(count < 0) {
-        printf("Parentheses does not match.\n");
 		invalid = 1;
         return 0;
       }
@@ -149,7 +148,6 @@ bool check_parentheses(int p, int q) {
   }
   
   if(count > 0){
-    printf("Parentheses does not match.\n");
     invalid = 1;
 	return 0;
   }
