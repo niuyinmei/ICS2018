@@ -128,7 +128,8 @@ static int cmd_p(char *args){
   bool success;
   uint32_t res = expr(args, &success);
   if(success){
-    printf("%u\n", res);  
+    printf("%u\n", res);
+	return 0;  
   }
   printf("Invalid input!\n");
   return 0;
