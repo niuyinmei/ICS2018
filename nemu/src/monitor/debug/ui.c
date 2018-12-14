@@ -135,11 +135,11 @@ static int cmd_p(char *args){
 }
 
 static int cmd_x(char *args){
-  /*char *arg1 = strtok(NULL, " ");
+  char *arg1 = strtok(NULL, " ");
   char *arg2 = arg1 + strlen(arg1) + 1;
- // int num = atoi(arg1);
+  int num = atoi(arg1);
   bool success;
- // vaddr_t addr = expr(arg2, &success);
+  vaddr_t addr = expr(arg2, &success);
   if(!success){
     printf("Invalid input!\n");
 	return 0;
@@ -147,7 +147,15 @@ static int cmd_x(char *args){
   for(int i = 0; i < num; i++){
     vaddr_t addr_temp = addr + 4 * i;
 	uint32_t data = vaddr_read(addr_temp, 4);
-  }*/
+	if(i % 4 == 0){
+	  printf("0x%x:\t",addr_temp);
+	}
+	printf("0x%x\t",data);
+	if((i + 1) % 4 == 0){
+	  printf("\n");
+	}
+  }
+  printf("\n");
   return 0;
 }
 
