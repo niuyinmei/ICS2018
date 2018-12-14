@@ -40,6 +40,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_p(char *args);
+static int cmd_x(char *args);
 static struct {
   char *name;
   char *description;
@@ -54,7 +55,7 @@ static struct {
   {"si", "Execution step by step", cmd_si},
   {"info", "Show status", cmd_info},
   {"p", "Expression value", cmd_p},
-  //{"x", "Scan memory", cmd_x}.
+  {"x", "Scan memory", cmd_x},
   //{"w", "Set watchpoint", cmd_w},
   //{"d", "Delete watchpoint", cmd_d}
 };
@@ -130,6 +131,23 @@ static int cmd_p(char *args){
     printf("%u\n", res);  
   }
   printf("Invalid input!\n");
+  return 0;
+}
+
+static int cmd_x(char *args){
+  /*char *arg1 = strtok(NULL, " ");
+  char *arg2 = arg1 + strlen(arg1) + 1;
+ // int num = atoi(arg1);
+  bool success;
+ // vaddr_t addr = expr(arg2, &success);
+  if(!success){
+    printf("Invalid input!\n");
+	return 0;
+  }
+  for(int i = 0; i < num; i++){
+    vaddr_t addr_temp = addr + 4 * i;
+	uint32_t data = vaddr_read(addr_temp, 4);
+  }*/
   return 0;
 }
 
