@@ -41,6 +41,8 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_p(char *args);
 static int cmd_x(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 static struct {
   char *name;
   char *description;
@@ -56,8 +58,8 @@ static struct {
   {"info", "Show status", cmd_info},
   {"p", "Expression value", cmd_p},
   {"x", "Scan memory", cmd_x},
-  //{"w", "Set watchpoint", cmd_w},
-  //{"d", "Delete watchpoint", cmd_d}
+  {"w", "Set watchpoint", cmd_w},
+  {"d", "Delete watchpoint", cmd_d}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -114,8 +116,7 @@ static int cmd_info(char *args){
     return 0;
   }
   else if (!strcmp(arg, "w")) {
-    /*TODO: Add watchpoints*/
-    printf("Unimplemented.\n");
+    print_wp();
     return 0;
   }
   else {
@@ -160,6 +161,37 @@ static int cmd_x(char *args){
   return 0;
 }
 
+static int cmd_w(char *args){
+  if(strlen(args) > MAX_LENGTH_OF_EXPR){
+    printf("Expression too long.\n");
+	return 0;
+  }  
+  bool success;
+  uint32_t res = expr(args, &success);
+  if(success){
+    WP *wp = new_wp();
+	strcpy(wp->expr, args);
+	wp->value = res;
+	printf("No.\tExpression\n");
+	printf("%d\t%s\n", wp->NO, wp->expr);
+	return 0;
+  }
+  printf("Invalid input.\n");
+  return 0;
+}
+
+
+static int cmd_d(char *args){
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL){
+    printf("Invalid input.\n");
+  }
+  else{
+    int number = atoi(arg);
+	free_wp(number);
+  }
+  return 0;
+}
 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {

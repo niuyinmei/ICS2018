@@ -12,10 +12,8 @@
 enum {
 
   TK_NOTYPE = 256, TK_EQ,
-  /*TODO: Add more token types */
-  /*Finished*/
   TK_AND, TK_OR, TK_NOT, TK_DEC, TK_HEX, 
-  TK_REG,  TK_MINUS, TK_POINTER
+  TK_REG,  TK_MINUS, TK_POINTER, TK_NEQ
 };
 
 static struct rule {
@@ -34,13 +32,16 @@ static struct rule {
   {"/", '/'},								// divide
   {"\\(", '('},								// left parenthesis
   {"\\)", ')'},								// right parenthesis
-  {"&&", TK_AND},							// and
-  {"\\|\\|", TK_OR},						// or
-  {"!", TK_NOT},							// not
   {"0[xX][0-9a-fA-F]+", TK_HEX},			// hexadecimal
   {"[0-9][0-9]*", TK_DEC},					// decimal
   {"\\$[a-zA-Z][a-zA-Z]+", TK_REG},			// register 
-  {"==", TK_EQ}								// equal
+  {"==", TK_EQ},							// equal
+  {"!=", TK_NEQ},							// not equal
+  {"&&", TK_AND},							// and
+  {"\\|\\|", TK_OR},						// or
+  {"!=", TK_NEQ},							// not equal
+  {"==", TK_EQ},								// equal
+  {"!", TK_NOT},							// not
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -160,7 +161,7 @@ bool check_parentheses(int p, int q) {
 bool is_operator(int type) {
   switch(type) {
     case '+': case '-': case '*': case '/':
-    case TK_EQ: case TK_AND: case TK_OR: 
+    case TK_EQ: case TK_NEQ: case TK_AND: case TK_OR: 
     case TK_MINUS: case TK_POINTER:
       return true;
     default:
@@ -196,7 +197,7 @@ int check_priority(int type1, int type2){
 	  priority1 = 3;
 	  break;
 	}
-	case TK_EQ:{
+	case TK_EQ: case TK_NEQ:{
 	  priority1 = 4;
 	  break;
 	}
@@ -223,7 +224,7 @@ int check_priority(int type1, int type2){
 	  priority2 = 3;
 	  break;
 	}
-	case TK_EQ:{
+	case TK_EQ: case TK_NEQ:{
 	  priority2 = 4;
 	  break;
 	}
@@ -246,7 +247,7 @@ enum{LEFT, RIGHT};
 int associate(int type){
   switch(type) {
 	case '+': case '-': case '*': case '/':
-	case TK_EQ: case TK_AND: case TK_OR:
+	case TK_EQ: case TK_NEQ: case TK_AND: case TK_OR:
 	  return LEFT;
 	case TK_NOT: case TK_POINTER: case TK_MINUS:
       return RIGHT;
@@ -365,7 +366,9 @@ uint32_t eval(int p, int q) {
         case '*':		return val1 * val2;
         case '/':		return val1 / val2;
 		case TK_AND:	return val1 && val2;
-		case TK_OR:		return val1 || val2; 
+		case TK_OR:		return val1 || val2;
+		case TK_EQ:     return val1 == val2;
+		case TK_NEQ:    return val2 != val2; 
         default:		assert(0);
 	  }
     }
