@@ -61,7 +61,7 @@ void print_wp(){
   }
   printf("No.\tExpression\n");
   while(p != NULL){
-    printf("%d\t%s", p->NO, p->expr);
+    printf("%d\t%s\n", p->NO, p->expr);
 	p = p->next;
   }
 }
