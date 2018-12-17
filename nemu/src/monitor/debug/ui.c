@@ -37,7 +37,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
-
+static int cmd_si(char *args);
+static int cmd_info(char *args);
+static int cmd_p(char *args);
+static int cmd_x(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 static struct {
   char *name;
   char *description;
@@ -48,7 +53,13 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-
+  /* Added, implementation not finished*/
+  {"si", "Execution step by step", cmd_si},
+  {"info", "Show status", cmd_info},
+  {"p", "Expression value", cmd_p},
+  {"x", "Scan memory", cmd_x},
+  {"w", "Set watchpoint", cmd_w},
+  {"d", "Delete watchpoint", cmd_d}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
@@ -72,6 +83,112 @@ static int cmd_help(char *args) {
       }
     }
     printf("Unknown command '%s'\n", arg);
+  }
+  return 0;
+}
+
+static int cmd_si(char *args){
+  /*extract the first argument*/
+  char *arg = strtok(NULL, "");
+  if (arg == NULL) {
+    cpu_exec(1);	//no argument given
+  }
+  else {
+    int count = atoi(arg);
+    cpu_exec(count);
+  }
+  return 0;
+} 
+
+static int cmd_info(char *args){
+  /*extract the first argument*/
+  char *arg = strtok(NULL, "");
+  if (arg == NULL) {
+    printf("Wrong argument!\n");
+    return 0;
+  }
+  else if (!strcmp(arg, "r")) {
+    printf("Register Status:\n");
+    for(int i = R_EAX; i <= R_EDI; i++){
+      printf("%s\t\t0x%x\n", reg_name(i, 4), reg_l(i));
+    }
+    printf("eip\t\t0x%x\n", cpu.eip);
+    return 0;
+  }
+  else if (!strcmp(arg, "w")) {
+    print_wp();
+    return 0;
+  }
+  else {
+    printf("Wrong argument!\n");
+    return 0;
+  }
+}
+
+static int cmd_p(char *args){
+  bool success;
+  uint32_t res = expr(args, &success);
+  if(success){
+    printf("%u\n", res);
+	return 0;  
+  }
+  printf("Invalid input!\n");
+  return 0;
+}
+
+static int cmd_x(char *args){
+  char *arg1 = strtok(NULL, " ");
+  char *arg2 = arg1 + strlen(arg1) + 1;
+  int num = atoi(arg1);
+  bool success;
+  vaddr_t addr = expr(arg2, &success);
+  if(!success){
+    printf("Invalid input!\n");
+	return 0;
+  }
+  for(int i = 0; i < num; i++){
+    vaddr_t addr_temp = addr + 4 * i;
+	uint32_t data = vaddr_read(addr_temp, 4);
+	if(i % 4 == 0){
+	  printf("0x%x:\t",addr_temp);
+	}
+	printf("0x%x\t",data);
+	if((i + 1) % 4 == 0){
+	  printf("\n");
+	}
+  }
+  printf("\n");
+  return 0;
+}
+
+static int cmd_w(char *args){
+  if(strlen(args) > MAX_LENGTH_OF_EXPR){
+    printf("Expression too long.\n");
+	return 0;
+  }  
+  bool success;
+  uint32_t res = expr(args, &success);
+  if(success){
+    WP *wp = new_wp();
+	strcpy(wp->expr, args);
+	wp->value = res;
+	printf("No.\tExpression\n");
+	printf("%d\t%s\n", wp->NO, wp->expr);
+	return 0;
+  }
+  printf("Invalid input.\n");
+  return 0;
+}
+
+
+static int cmd_d(char *args){
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL){
+    printf("Invalid input.\n");
+  }
+  else{
+    int number = atoi(arg);
+	free_wp(number);
   }
   return 0;
 }
