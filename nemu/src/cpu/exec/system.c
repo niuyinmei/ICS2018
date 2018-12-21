@@ -50,7 +50,6 @@ make_EHelper(iret) {
 }
 
 make_EHelper(in) {
-	// TODO();
 	switch(id_src->width)
 	{
 		case 1: t0 = pio_read_b(id_src->val); break;
@@ -66,7 +65,6 @@ make_EHelper(in) {
 }
 
 make_EHelper(out) {
-	// TODO();
 	switch(id_src->width)
 	{
 		case 1: pio_write_b(id_dest->val, id_src->val); break;
