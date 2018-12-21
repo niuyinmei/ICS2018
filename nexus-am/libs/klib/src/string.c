@@ -8,24 +8,32 @@ size_t strlen(const char *s) {
     return i;
 }
 
-char *strcpy(char* dst,const char* src) {
-  unsigned i;
-  for (i=0; src[i] != '\0'; ++i)
-    dst[i] = src[i];
-  dst[i]= '\0';
-  return dst;
+char *strcpy(char* dst,const char* src) { //pass
+	// 注意前后覆盖的问题
+	return strncpy(dst, src, strlen(src));
 }
 
-char* strncpy(char* dst, const char* src, size_t n) {
-  char *ret = dst;
-	while (*src && n--)
+char* strncpy(char* dst, const char* src, size_t n) { //pass
+	size_t size_src = strlen(src);
+	if( n > size_src) return strncpy(dst, src, size_src);
+	else // n <= size_src
 	{
-		*dst = *src;
-		dst++;
-		src++;
+		// printf("strncpy1 %s %s %d\n", dst, src, (int)n);
+		// 注意前后覆盖的问题
+		char ch[n+1];
+		char *head = ch;
+		size_t i = 0;
+		while( i < n ) {
+			*(head+i) = *(src+i);
+			i++;
+		}
+		ch[n] = '\0';
+		head = ch;
+		char *result = dst;
+		while((*(dst++) = *(head++))) ;
+		// printf("strncpy2 %s\n", dst);
+		return result;
 	}
-	*dst = '\0';
-	return ret;
 }
 
 char* strcat(char* dst, const char* src) {
