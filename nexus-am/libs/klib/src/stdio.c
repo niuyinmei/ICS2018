@@ -7,14 +7,13 @@ int printf(const char *fmt, ...) {
   va_list args;
   int i,len;
   char out[200];
-  //val = 0;
   va_start(args,fmt);
   vsprintf(out,fmt,args);
   va_end(args);
   len = strlen(out);
   for(i = 0;i < len;i ++)
   {
-      _putc(out[i]);
+    _putc(out[i]);
   }
   return 0;
 }
