@@ -37,26 +37,32 @@ char* strncpy(char* dst, const char* src, size_t n) { //pass
 }
 
 char* strcat(char* dst, const char* src) {
-  size_t i,j;
-  for (i = 0; dst[i] != '\0'; i++)
-    ;
-  for (j = 0; src[j] != '\0'; j++)
-    dst[i+j] = src[j];
-  dst[i+j] = '\0';
-  return dst;
+  // printf("strcat1 %s %s\n", dst, src);
+  char *result = dst;
+  while(*dst) dst++;
+  strcpy(dst, src);
+  // printf("strcat2 %s\n", dst);
+  return result;
 }
 
 int strcmp(const char* s1, const char* s2) {
-  while(*s1 && (*s1==*s2))
-    s1++,s2++;
-  return *(const unsigned char*)s1-*(const unsigned char*)s2;
+  int a = 0;
+	while( (a = (*s1 - *s2)) == 0 && *s1 && *s2) {
+		s1++;
+		s2++;
+	}
+	// printf("strcmp2 %d\n", a);
+	return a;
 }
 
 int strncmp(const char* s1, const char* s2, size_t n) {
-  while(n--)
-    if(*s1++!=*s2++)
-      return *(unsigned char*)(s1 - 1) - *(unsigned char*)(s2 - 1);
-  return 0;
+  assert((s1 != NULL) && (s2 != NULL));
+	int a = 0;
+	while( (a = (*s1 - *s2)) == 0 && *s1 && *s2 && n--) {
+		s1++;
+		s2++;
+	}
+	return a;
 }
 
 void* memset(void* v,int c,size_t n) {
