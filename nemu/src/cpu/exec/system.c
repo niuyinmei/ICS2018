@@ -43,7 +43,7 @@ make_EHelper(iret) {
 }
 
 make_EHelper(in) {
-  switch(id_src->width)
+  switch(id_dest->width)
 	{
 		case 1: t0 = pio_read_b(id_src->val); break;
 		case 2: t0 = pio_read_w(id_src->val); break;
