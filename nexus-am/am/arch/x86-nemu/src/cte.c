@@ -10,6 +10,7 @@ _Context* irq_handle(_Context *tf) {
   _Context *next = tf;
   if (user_handler) {
     _Event ev = {0};
+    //printf("%d\n", tf->edi);
     switch (tf->irq) {
       default: ev.event = _EVENT_ERROR; break;
     }

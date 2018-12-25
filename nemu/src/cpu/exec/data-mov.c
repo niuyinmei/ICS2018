@@ -37,7 +37,6 @@ make_EHelper(pop) {
 }
 
 make_EHelper(pusha) {
-	// TODO();
 	t0 = cpu.esp;
 	rtl_push(&cpu.eax);
 	rtl_push(&cpu.ecx);
