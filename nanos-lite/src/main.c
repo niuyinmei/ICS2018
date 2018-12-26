@@ -25,9 +25,10 @@ int main() {
 #endif
 
   init_fs();
-Log("'Hello World!2' from Nanos-lite");
+
 
   init_proc();
+Log("'Hello World!2' from Nanos-lite");
 
 #ifdef HAS_CTE
   _yield();
