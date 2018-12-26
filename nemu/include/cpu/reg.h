@@ -50,6 +50,8 @@ typedef struct {
 		uint32_t flags;
 	};
 
+	uint32_t cr0;
+  uint32_t cr3;
 	bool INTR;
 
 	struct {
