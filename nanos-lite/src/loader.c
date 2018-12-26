@@ -1,9 +1,18 @@
 #include "proc.h"
 
 #define DEFAULT_ENTRY 0x4000000
+extern int fs_open(const char *pathname, int flags, int mode);
+extern size_t fs_read(int fd, void *buf, size_t len);
+extern size_t fs_write(int fd, const void *buf, size_t len);
+extern size_t fs_lseek(int fd, size_t offset, int whence);
+extern int fs_close(int fd);
+extern size_t fs_filesz(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();
+
+  int fd = fs_open(filename, 0, 0);
+	fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
+	fs_close(fd);
   return DEFAULT_ENTRY;
 }
 
