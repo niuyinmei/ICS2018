@@ -9,8 +9,8 @@ void vecnull();
 
 _Context* irq_handle(_Context *tf) {
   _Context *next = tf;
-  printf("cpu eax:0x%08x\n", tf->eax);
-  printf("cpu ecx:0x%08x\n", tf->ecx);
+  //Log("cpu eax:0x%08x\n", tf->eax);
+  //Log("cpu ecx:0x%08x\n", tf->ecx);
 /*    printf("cpu edx:0x%08x\n", tf->edx);*/
 /*    printf("cpu ebx:0x%08x\n", tf->ebx);*/
 /*    printf("cpu esp:0x%08x\n", tf->esp);*/
