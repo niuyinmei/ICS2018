@@ -16,17 +16,16 @@ int main() {
   Log("Build time: %s, %s", __TIME__, __DATE__);
 
   init_ramdisk();
-
   init_device();
-Log("'Hello World!1' from Nanos-lite");
 
 
 #ifdef HAS_CTE
-Log("'Hello World!2' from Nanos-lite");
+
   init_irq();
 #endif
 
   init_fs();
+Log("'Hello World!2' from Nanos-lite");
 
   init_proc();
 
