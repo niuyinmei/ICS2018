@@ -20,6 +20,7 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
+  Log("initproc\n");
   return;
 }
 
