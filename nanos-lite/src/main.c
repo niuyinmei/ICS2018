@@ -24,7 +24,7 @@ int main() {
   init_irq();
 #endif
 
-  //init_fs();
+  init_fs();
 
 
   init_proc();
