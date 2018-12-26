@@ -20,8 +20,8 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  /*extern void naive_uload(PCB *pcb, const char *filename);
-	naive_uload(NULL, "/bin/init");*/
+  extern void naive_uload(PCB *pcb, const char *filename);
+	naive_uload(NULL, "/bin/init");
 }
 
 _Context* schedule(_Context *prev) {
