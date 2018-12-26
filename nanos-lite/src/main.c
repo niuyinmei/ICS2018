@@ -15,8 +15,8 @@ int main() {
   Log("'Hello World!' from Nanos-lite");
   Log("Build time: %s, %s", __TIME__, __DATE__);
 
-  //init_ramdisk();
-  //init_device();
+  init_ramdisk();
+  init_device();
 
 
 #ifdef HAS_CTE
@@ -28,8 +28,6 @@ int main() {
 
 
   init_proc();
-Log("'Hello World!2' from Nanos-lite");
-
 #ifdef HAS_CTE
   _yield();
 #endif
