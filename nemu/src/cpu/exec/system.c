@@ -52,7 +52,6 @@ make_EHelper(iret) {
 	rtl_pop(&cpu.flags);
 
 	print_asm("iret");
-	print_asm("iret");
 }
 
 make_EHelper(in) {
