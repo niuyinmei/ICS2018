@@ -18,8 +18,11 @@ int main() {
   init_ramdisk();
 
   init_device();
+Log("'Hello World!1' from Nanos-lite");
+
 
 #ifdef HAS_CTE
+Log("'Hello World!2' from Nanos-lite");
   init_irq();
 #endif
 
