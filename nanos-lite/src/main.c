@@ -27,7 +27,7 @@ int main() {
   init_fs();
 
 
-  init_proc();
+  //init_proc();
 Log("'Hello World!2' from Nanos-lite");
 
 #ifdef HAS_CTE
