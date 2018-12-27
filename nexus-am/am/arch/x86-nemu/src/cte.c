@@ -16,6 +16,7 @@ _Context* irq_handle(_Context *tf) {
     printf("cpu esi:0x%08x\n", tf->esi);
     printf("cpu edi:0x%08x\n", tf->edi);
     printf("cpu eip:0x%08x\n", tf->eip);
+    printf("irq:%x", tf->irq);
   if (user_handler) {
     _Event ev = {0};
 
