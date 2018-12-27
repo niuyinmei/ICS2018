@@ -29,7 +29,7 @@ int main() {
 
   init_proc();
 #ifdef HAS_CTE
-  //_yield();
+  _yield();
 #endif
 
   panic("Should not reach here");
