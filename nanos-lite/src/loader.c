@@ -10,10 +10,10 @@ extern int fs_close(int fd);
 extern size_t fs_filesz(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  printf("a:%s\n", filename);
-  int fd = fs_open(filename, 0, 0);
-	fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
-	fs_close(fd);
+  //printf("a:%s\n", filename);
+  // int fd = fs_open(filename, 0, 0);
+	// fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
+	// fs_close(fd);
   return DEFAULT_ENTRY;
 }
 
