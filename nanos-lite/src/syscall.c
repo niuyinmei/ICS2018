@@ -14,9 +14,9 @@ _Context* do_syscall(_Context *c) {
     case SYS_yield:
 			result = 1;
 			break;
-		// case SYS_exit:
-		// 	naive_uload(NULL, NULL);
-		// 	break;
+		case SYS_exit:
+		 	naive_uload(NULL, "/bin/init");
+		 	break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
