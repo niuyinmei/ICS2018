@@ -4,6 +4,7 @@
 extern _Context* do_syscall(_Context *c);
 
 static _Context* do_event(_Event e, _Context* c) {
+  printf("asd\n");
   switch (e.event) {
     switch (e.event) {
       //case _EVENT_YIELD: printf("System Trap.\n"); break;
