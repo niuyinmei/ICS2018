@@ -40,7 +40,6 @@ static GateDesc idt[NR_IRQ];
 
 int _cte_init(_Context*(*handler)(_Event, _Context*)) {
   // initialize IDT
-  //printf("1.\n");
   for (unsigned int i = 0; i < NR_IRQ; i ++) {
     idt[i] = GATE(STS_TG32, KSEL(SEG_KCODE), vecnull, DPL_KERN);
   }
@@ -62,6 +61,7 @@ _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
 }
 
 void _yield() {
+  printf("here");
   asm volatile("int $0x81");
 }
 
