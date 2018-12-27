@@ -20,7 +20,7 @@ _Context* irq_handle(_Context *tf) {
 /*    printf("cpu eip:0x%08x\n", tf->eip);*/
   if (user_handler) {
     _Event ev = {0};
-    //printf("%d\n", tf->edi);
+    printf("%d\n", tf->edi);
     switch (tf->irq) {
       case 0x80: ev.event = _EVENT_SYSCALL; break;
       case 0x81: ev.event = _EVENT_YIELD; break;
@@ -40,7 +40,7 @@ static GateDesc idt[NR_IRQ];
 
 int _cte_init(_Context*(*handler)(_Event, _Context*)) {
   // initialize IDT
-  printf("1.\n");
+  //printf("1.\n");
   for (unsigned int i = 0; i < NR_IRQ; i ++) {
     idt[i] = GATE(STS_TG32, KSEL(SEG_KCODE), vecnull, DPL_KERN);
   }
