@@ -18,7 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	// fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
 	// fs_close(fd);
   ramdisk_read((void *)DEFAULT_ENTRY, 0, get_ramdisk_size());
-  Log("loader successful.\n");
+  Log("loader successful.");
   return DEFAULT_ENTRY;
 }
 
