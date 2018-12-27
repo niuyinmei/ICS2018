@@ -14,10 +14,10 @@ _Context* do_syscall(_Context *c) {
   Log("%d", a[1]);
   switch (a[0]) {
     case SYS_yield:
-			result = 1;
+			result = 0;
 			break;
 		case SYS_exit:
-      _halt(1);
+      _halt(a[0]);
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
