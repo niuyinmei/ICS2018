@@ -20,7 +20,8 @@ void hello_fun(void *arg) {
 }
 
 void init_proc() {
-  Log("initproc\n");
+  extern void naive_uload(PCB *pcb, const char *filename);
+	naive_uload(NULL, NULL);
   return;
 }
 
