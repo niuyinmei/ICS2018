@@ -19,10 +19,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 	item.hi = vaddr_read(addr + 4, 4);
 
 
-	t1 = (item.gd.offset_15_0 & 0xFFFF)
-	| ((item.gd.offset_31_16 & 0xFFFF) << 16);
-	rtl_j(t1);
-
 	// 保存eflags cs 返回地址
 	rtl_push(&cpu.flags);
 	t0 = cpu.cs;
@@ -30,6 +26,9 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 	rtl_push(&ret_addr);
 
 	cpu.eflags.IF = 0;
+	t1 = (item.gd.offset_15_0 & 0xFFFF)
+	| ((item.gd.offset_31_16 & 0xFFFF) << 16);
+	rtl_j(t1);
 }
 
 void dev_raise_intr() {
