@@ -20,7 +20,7 @@ _Context* irq_handle(_Context *tf) {
 /*    printf("cpu eip:0x%08x\n", tf->eip);*/
   if (user_handler) {
     _Event ev = {0};
-    printf("%d\n", tf->irq);
+    //printf("%d\n", tf->irq);
     switch (tf->irq) {
       case 0x80: ev.event = _EVENT_SYSCALL; break;
       case 0x81: ev.event = _EVENT_YIELD; break;
