@@ -8,7 +8,7 @@ static _Context* do_event(_Event e, _Context* c) {
     switch (e.event) {
       case _EVENT_YIELD: panic("System Trap.\n"); break;
       case _EVENT_SYSCALL: do_syscall(c); break;
-      default: printf("asd");panic("Unhandled event ID = %d", e.event);
+      default: panic("Unhandled event ID = %d", e.event);
     }
 
   }
