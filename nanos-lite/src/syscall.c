@@ -12,7 +12,7 @@ _Context* do_syscall(_Context *c) {
 	a[2] = c->GPR3;
 	a[3] = c->GPR4;
   Log("%d", a[0]);
-  switch (a[1]) {
+  switch (a[0]) {
     case SYS_yield:
 			result = 0;
 			break;
