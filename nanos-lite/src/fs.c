@@ -74,7 +74,6 @@ size_t fs_read(int fd, void *buf, size_t len){
   		case FD_FB:
   			break;
   		case FD_EVENTS:
-        printf("fd_events\n");
   			len = file_table[fd].read(buf, 0, len);
   			break;
   		case FD_DISPINFO:
@@ -86,7 +85,8 @@ size_t fs_read(int fd, void *buf, size_t len){
   			file_table[fd].open_offset += len;
   			break;
   		default:
-  			if(file_table[fd].open_offset >= fs_size)
+        printf("default\n");
+        if(file_table[fd].open_offset >= fs_size)
   				return 0;
   			if(file_table[fd].open_offset + len > fs_size)
   				len = fs_size - file_table[fd].open_offset;
