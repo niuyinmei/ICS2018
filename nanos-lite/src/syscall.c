@@ -20,6 +20,7 @@ _Context* do_syscall(_Context *c) {
       _halt(a[1]);
       break;
     case SYS_write:
+      Log("get sys write");
       result = sys_write(a[1], (void*)a[2], a[3]);
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
