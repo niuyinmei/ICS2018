@@ -102,7 +102,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len) {
 	size_t fs_size = fs_filesz(fd);
-  printf("fs_write filename:%s\n", file_table[fd].name);
+  //printf("fs_write filename:%s\n", file_table[fd].name);
 	switch(fd) {
 		case FD_STDIN: break;
 		case FD_TTY:
