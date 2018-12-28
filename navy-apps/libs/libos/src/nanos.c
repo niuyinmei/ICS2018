@@ -56,7 +56,7 @@ void *_sbrk(intptr_t increment){
 int _read(int fd, void *buf, size_t count) {
   // _exit(SYS_read);
   // return 0;
-  return _syscall_(SYS_read, fd, (uintptr_t)buf, count);
+  return _syscall_(SYS_read, fd, (intptr_t)buf, count);
 }
 
 int _close(int fd) {
@@ -74,7 +74,7 @@ off_t _lseek(int fd, off_t offset, int whence) {
 int _execve(const char *fname, char * const argv[], char *const envp[]) {
   // _exit(SYS_execve);
   // return 0;
-  return _syscall_(SYS_execve, (uintptr_t)fname, (uintptr_t)argv, (uintptr_t)envp); 
+  return _syscall_(SYS_execve, (uintptr_t)fname, (uintptr_t)argv, (uintptr_t)envp);
 }
 
 // The code below is not used by Nanos-lite.
