@@ -83,7 +83,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len){
   size_t fs_size = fs_filesz(fd);
-  Log("write:%d", fd);
+  //Log("write:%d", fd);
   switch(fd) {
 		case FD_STDIN: break;
 		case FD_TTY:
