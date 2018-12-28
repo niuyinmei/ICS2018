@@ -74,6 +74,7 @@ size_t fs_read(int fd, void *buf, size_t len){
   		case FD_FB:
   			break;
   		case FD_EVENTS:
+        printf("fd_events\n");
   			len = file_table[fd].read(buf, 0, len);
   			break;
   		case FD_DISPINFO:
