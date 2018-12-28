@@ -55,7 +55,7 @@ int fs_open(const char *pathname, int flags, int mode){
     //printf("%s %s\n", file_table[i].name, pathname);
 
 		if (strcmp(file_table[i].name, pathname) == 0) {
-      printf("Found! %s", pathname);
+      printf("Found! %s\n", pathname);
       file_table[i].open_offset = 0;
 			return i;
 		}
@@ -73,7 +73,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 				return 0;
 			if(file_table[fd].open_offset + len > fs_size)
 				len = fs_size - file_table[fd].open_offset;
-      printf("fs_read filename:%s", file_table[fd].name);
+      printf("fs_read filename:%s\n", file_table[fd].name);
 			ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
 			file_table[fd].open_offset += len;
 			break;
