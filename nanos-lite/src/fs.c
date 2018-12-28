@@ -123,7 +123,7 @@ int fs_close(int fd){
 size_t fs_lseek(int fd, size_t offset, int whence)
 {
 	size_t result = -1;
-  printf("fseek file:%s, open offset:%d",file_table[fd].name, file_table[fd].open_offset);
+  printf("fseek file:%s, open offset:%d\n",file_table[fd].name, file_table[fd].open_offset);
 	switch(whence) {
 		case SEEK_SET:
 			if (offset >= 0 && offset <= fs_filesz(fd)) {
