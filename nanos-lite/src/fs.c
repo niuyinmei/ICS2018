@@ -68,7 +68,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 
 size_t fs_read(int fd, void *buf, size_t len) {
 	size_t fs_size = fs_filesz(fd);
-  printf("fs_read filename:%s\n", file_table[fd].name);
+  //printf("fs_read filename:%s\n", file_table[fd].name);
 	switch(fd) {
 		case FD_STDIN:
 		case FD_STDOUT:
