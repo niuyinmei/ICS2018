@@ -73,7 +73,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 				return 0;
 			if(file_table[fd].open_offset + len > fs_size)
 				len = fs_size - file_table[fd].open_offset;
-      printf("%d %d %d\n", fs_size, file_table[fd].open_offset, len);
+      Log("%d", fd);
 			ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
 			file_table[fd].open_offset += len;
 			break;
@@ -83,6 +83,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len){
   size_t fs_size = fs_filesz(fd);
+  Log("write:%d", fd);
   switch(fd) {
 		case FD_STDIN: break;
 		case FD_TTY:
