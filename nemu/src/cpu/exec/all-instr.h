@@ -24,6 +24,8 @@ make_EHelper(jmp);
 make_EHelper(jmp_rm);
 make_EHelper(jcc);
 
+make_EHelper(stc);
+
 // arith.c
 make_EHelper(sub);
 make_EHelper(sbb);
@@ -69,3 +71,4 @@ make_EHelper(lidt);
 make_EHelper(iret);
 make_EHelper(mov_cr2r);
 make_EHelper(mov_r2cr);
+make_EHelper(stos);

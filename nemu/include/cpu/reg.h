@@ -36,16 +36,28 @@ typedef struct {
 
 	union {
 		struct {
-			uint8_t CF  :   1;
-			uint8_t DEF1:	  1;
-			uint8_t DEF2:	  4;
-			uint8_t ZF  :   1;
-			uint8_t SF  :   1;
-			uint8_t DEF3:   1;
-			uint8_t IF  :   1;
-			uint8_t DEF4:   1;
-			uint8_t OF  :   1;
-			uint32_t DEF5:  20;
+			uint32_t CF:1;
+			uint32_t R1:1;
+			uint32_t PF:1;
+			uint32_t R2:1;
+			uint32_t AF:1;
+			uint32_t R3:1;
+			uint32_t ZF:1;
+			uint32_t SF:1;
+			uint32_t TF:1;
+			uint32_t IF:1;
+			uint32_t DF:1;
+			uint32_t OF:1;
+			uint32_t IOPL:1;
+			uint32_t NT:1;
+			uint32_t R4:1;
+			uint32_t RF:1;
+			uint32_t VM:1;
+			uint32_t AC:1;
+			uint32_t VIF:1;
+			uint32_t VIP:1;
+			uint32_t ID:1;
+			uint32_t R5:10;
 		} eflags;
 		uint32_t flags;
 	};
@@ -59,6 +71,7 @@ typedef struct {
 		uint32_t base;
 	} idtr;
 	uint16_t cs;
+	rtlreg_t es;
 
 	vaddr_t eip;
 } CPU_state;
