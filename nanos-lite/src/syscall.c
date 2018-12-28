@@ -3,7 +3,7 @@
 #include "proc.h"
 #include "fs.h"
 
-size_t sys_write(int fd, const void *buf, size_t len);
+//size_t sys_write(int fd, const void *buf, size_t len);
 
 _Context* do_syscall(_Context *c) {
   uintptr_t a[4];
@@ -22,7 +22,7 @@ _Context* do_syscall(_Context *c) {
       break;
     case SYS_write:
       //Log("get sys write");
-      result = sys_write(a[1], (void*)a[2], a[3]);
+      result = fs_write(a[1], (void*)a[2], a[3]);
       break;
     case SYS_brk:
       result = 0;
@@ -46,7 +46,7 @@ _Context* do_syscall(_Context *c) {
   return NULL;
 }
 
- size_t sys_write(int fd, const void *buf, size_t len){
+/* size_t sys_write(int fd, const void *buf, size_t len){
    //Log("SYS_write");
    size_t byteswritten;
    switch (fd) {
@@ -61,4 +61,4 @@ _Context* do_syscall(_Context *c) {
        break;
      default:  return 0;
    }
- }
+ }*/
