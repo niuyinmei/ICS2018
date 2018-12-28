@@ -66,26 +66,17 @@ int fs_open(const char *pathname, int flags, int mode){
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-  size_t bytesread;
+  size_t fs_size = fs_filesz(fd);
   switch (fd) {
-    case 0:
-    case 1:
-    case 2:
-      break;
-    case FD_DISPINFO:
-      bytesread = dispinfo_read(buf, file_table[fd].open_offset, len);
-      file_table[fd].open_offset += bytesread;
-      return bytesread;
-    case FD_EVENTS:
-      len = file_table[fd].read(buf, 0, len);
-      break;
     default:
-      bytesread = ((file_table[fd].open_offset + len <= fs_filesz(fd)) ? len : fs_filesz(fd) - file_table[fd].open_offset);
-      if (bytesread >= 0) {
-        ramdisk_read(buf, file_table[fd].open_offset + file_table[fd].disk_offset, bytesread);
-        file_table[fd].open_offset += bytesread;
-        return bytesread;
-      }
+			if(file_table[fd].open_offset >= fs_size)
+				return 0;
+			if(file_table[fd].open_offset + len > fs_size)
+				len = fs_size - file_table[fd].open_offset;
+        printf("%d %d %d\n", fs_size, file_table[fd].open_offset, len);
+			ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+			file_table[fd].open_offset += len;
+			break;
       return 0;
   }
   return 0;
