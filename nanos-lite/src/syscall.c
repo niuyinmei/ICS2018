@@ -35,6 +35,7 @@ _Context* do_syscall(_Context *c) {
 }
 
 size_t sys_write(int fd, const void *buf, size_t len){
+  Log("SYS_write");
   size_t byteswritten;
   switch (fd) {
     case 1:
