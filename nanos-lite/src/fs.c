@@ -118,6 +118,33 @@ int fs_close(int fd){
   return 0;
 }
 
+size_t fs_lseek(int fd, size_t offset, int whence)
+{
+	size_t result = -1;
+
+	switch(whence) {
+		case SEEK_SET:
+			if (offset >= 0 && offset <= fs_filesz(fd)) {
+				file_table[fd].open_offset = offset;
+				result = file_table[fd].open_offset = offset;
+			}
+			break;
+		case SEEK_CUR:
+			if ((offset + file_table[fd].open_offset >= 0) &&
+					(offset + file_table[fd].open_offset <= fs_filesz(fd))) {
+				file_table[fd].open_offset += offset;
+				result = file_table[fd].open_offset;
+			}
+			break;
+		case SEEK_END:
+			file_table[fd].open_offset = fs_filesz(fd) + offset;
+			result = file_table[fd].open_offset;
+			break;
+	}
+
+	return result;
+}
+
 size_t fs_filesz(int fd)
 {
 	return file_table[fd].size;

@@ -36,6 +36,9 @@ _Context* do_syscall(_Context *c) {
     case SYS_read:
       result = fs_read(a[1], (void *)a[2], a[3]);
       break;
+    case SYS_lseek:
+  		result = fs_lseek(a[1], a[2], a[3]);
+  		break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
