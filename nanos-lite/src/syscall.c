@@ -27,6 +27,15 @@ _Context* do_syscall(_Context *c) {
     case SYS_brk:
       result = 0;
       break;
+    case SYS_open:
+      result = fs_open((void *)a[1], a[2], a[3]);
+      break;
+    case SYS_close:
+      result = fs_close(a[1]);
+      break;
+    case SYS_read:
+      result = fs_read(a[1], (void *)a[2], a[3]);
+      break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
