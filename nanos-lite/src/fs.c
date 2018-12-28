@@ -55,7 +55,7 @@ int fs_open(const char *pathname, int flags, int mode){
     //printf("%s %s\n", file_table[i].name, pathname);
 
 		if (strcmp(file_table[i].name, pathname) == 0) {
-      Log("Found! %s", pathname);
+      printf("Found! %s", pathname);
       file_table[i].open_offset = 0;
 			return i;
 		}
@@ -73,7 +73,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 				return 0;
 			if(file_table[fd].open_offset + len > fs_size)
 				len = fs_size - file_table[fd].open_offset;
-      Log("fs_read filename:%s", file_table[fd].name);
+      printf("fs_read filename:%s", file_table[fd].name);
 			ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
 			file_table[fd].open_offset += len;
 			break;
@@ -83,7 +83,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len){
   size_t fs_size = fs_filesz(fd);
-  //Log("write:%d", fd);
+  printf("fs_write filename:%s", file_table[fd].name);
   switch(fd) {
 		case FD_STDIN: break;
 		case FD_TTY:
@@ -123,7 +123,7 @@ int fs_close(int fd){
 size_t fs_lseek(int fd, size_t offset, int whence)
 {
 	size_t result = -1;
-  Log("fseek file:%s, open offset:%d",file_table[fd].name, file_table[fd].open_offset);
+  printf("fseek file:%s, open offset:%d",file_table[fd].name, file_table[fd].open_offset);
 	switch(whence) {
 		case SEEK_SET:
 			if (offset >= 0 && offset <= fs_filesz(fd)) {
