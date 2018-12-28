@@ -10,10 +10,10 @@ void vecsys();
 
 _Context* irq_handle(_Context *tf) {
   _Context *next = tf;
-   printf("cpu eax:0x%08x\n", tf->eax);
-   printf("cpu ebx:0x%08x\n", tf->ebx);
-   printf("cpu ecx:0x%08x\n", tf->ecx);
-   printf("cpu edx:0x%08x\n", tf->edx);
+   // printf("cpu eax:0x%08x\n", tf->eax);
+   // printf("cpu ebx:0x%08x\n", tf->ebx);
+   // printf("cpu ecx:0x%08x\n", tf->ecx);
+   // printf("cpu edx:0x%08x\n", tf->edx);
   if (user_handler) {
     _Event ev = {0};
 
