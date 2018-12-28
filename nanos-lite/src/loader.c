@@ -18,6 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	// fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
 	// fs_close(fd);
   // ramdisk_read((void *)DEFAULT_ENTRY, 0, get_ramdisk_size());
+  Log("%s", filename);
   int fd = fs_open(filename, 0, 0);
 	fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
 	fs_close(fd);
@@ -26,6 +27,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
+  Log("%s", filename);
   uintptr_t entry = loader(pcb, filename);
   ((void(*)())entry) ();
 }
