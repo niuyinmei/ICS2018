@@ -74,9 +74,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 
 size_t fs_read(int fd, void *buf, size_t len) {
 	size_t fs_size = fs_filesz(fd);
-
-
-	//Log("in the read, fd = %d, file size = %d, len = %d, file open_offset = %d\n", fd, fs_size, len, file_table[fd].open_offset);
+  printf("fs_read filename:%s\n", file_table[fd].name);
 	switch(fd) {
 		case FD_STDIN:
 		case FD_STDOUT:
@@ -110,8 +108,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len) {
 	size_t fs_size = fs_filesz(fd);
-	//Log("in the write, fd = %d, file size = %d, len = %d, file open_offset = %d\n", fd, fs_size, len, file_table[fd].open_offset);
-
+  printf("fs_write filename:%s\n", file_table[fd].name);
 	switch(fd) {
 		case FD_STDIN: break;
 		case FD_TTY:
