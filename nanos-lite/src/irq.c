@@ -10,9 +10,9 @@ static _Context* do_event(_Event e, _Context* c) {
   switch (e.event) {
     case _EVENT_YIELD:{
       //printf("System Trap.\n"); //requirement in pa3
-      Log("Yield");
-      schedule(c);
-      break;
+      //Log("Yield");
+      return schedule(c);
+      //break;
     }
     case _EVENT_SYSCALL: {
       do_syscall(c);
