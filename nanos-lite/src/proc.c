@@ -33,11 +33,12 @@ void init_proc() {
 
   // for pa4.1 hello
   context_kload(&pcb[0], (void *)hello_fun);
+  //for pa4.1 PAL
+  context_uload(&pcb[1], "/bin/init");
   switch_boot_pcb();
   //return;
 
-  //for pa4.1 PAL
-  //context_uload(&pcb[1], "/bin/init");
+
   return;
 }
 
@@ -47,7 +48,7 @@ _Context* schedule(_Context *prev) {
   current->tf = prev;
 
   //for pa4.1 PAL
-  //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // if(count++ <50){
   //   current = &pcb[fg_pcb];
   // }
