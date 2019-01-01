@@ -38,7 +38,7 @@ void init_proc() {
 
   //for pa4.1 PAL
   context_uload(&pcb[1], "/bin/init");
-
+  return;
 }
 
 //static uint32_t count = 0;

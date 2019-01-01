@@ -88,6 +88,6 @@ _Context *_ucontext(_Protect *p, _Area ustack, _Area kstack, void *entry, void *
   ct->eip = (uintptr_t)entry;
   ct->cs = 8;
   ct->eflags = 0x2 | (1<<9);
-  	*(uintptr_t *)(ustack.end - sizeof(sizeof(uintptr_t))) = 0;
+  *(uintptr_t *)(ustack.end - sizeof(sizeof(uintptr_t))) = 0;
   return ct;
 }
