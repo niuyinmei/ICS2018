@@ -57,6 +57,7 @@ _Context *_kcontext(_Area stack, void (*entry)(void *), void *arg) {
   memset(ct, 0, sizeof(_Context));
   ct->eip = (uintptr_t)entry;
   ct->cs = 8;
+  printf("_kcontext\n");
   return ct;
 }
 

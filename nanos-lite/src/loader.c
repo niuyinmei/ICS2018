@@ -30,7 +30,7 @@ void context_kload(PCB *pcb, void *entry) {
   _Area stack;
   stack.start = pcb->stack;
   stack.end = stack.start + sizeof(pcb->stack);
-
+  Log("kload");
   pcb->tf = _kcontext(stack, entry, NULL);
 }
 
