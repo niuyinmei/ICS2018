@@ -2,7 +2,7 @@
 #include "klib.h"
 
 extern _Context* do_syscall(_Context *c);
-extern _Context* schedule(_Context *c);
+extern _Context* schedule(_Context *prev);
 
 static _Context* do_event(_Event e, _Context* c) {
   // printf("%d\n", e.event);
@@ -11,8 +11,8 @@ static _Context* do_event(_Event e, _Context* c) {
     case _EVENT_YIELD:{
       //printf("System Trap.\n"); //requirement in pa3
       //Log("Yield");
-      return schedule(c);
-      //break;
+      schedule(c);
+      break;
     }
     case _EVENT_SYSCALL: {
       do_syscall(c);
