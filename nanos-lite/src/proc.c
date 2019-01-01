@@ -57,6 +57,6 @@ _Context* schedule(_Context *prev) {
   //   current = &pcb[0];
   // }
   //Log("schedule");
-  current = &pcb[0];
+  //current = &pcb[0];
   return current->tf;
 }
