@@ -25,7 +25,7 @@ int main() {
 #endif
 
   init_fs();
-
+  panic("dsa");
 
   init_proc();
 #ifdef HAS_CTE
