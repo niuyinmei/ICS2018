@@ -29,8 +29,11 @@ void init_proc() {
   // extern void naive_uload(PCB *pcb, const char *filename);
 	// naive_uload(NULL, "/bin/init");
   // return;
+  Log("here1");
   context_kload(&pcb[0], (void *)hello_fun);
+  Log("here2");
   switch_boot_pcb();
+  Log("here3");
   return;
 }
 
