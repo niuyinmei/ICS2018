@@ -19,7 +19,7 @@ void switch_boot_pcb() {
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    //Log("Hello World from Nanos-lite for the %dth time!", j);
+    Log("Hello World from Nanos-lite for the %dth time!", j);
     j++;
     _yield();
   }
@@ -44,19 +44,14 @@ void init_proc() {
 
 //static uint32_t count = 0;
 _Context* schedule(_Context *prev) {
-  //for pa4.1 hellp
+
   current->tf = prev;
+
+  //for pa4.1 hello
+  //current = &pcb[0];
 
   //for pa4.1 PAL
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  // if(count++ <50){
-  //   current = &pcb[fg_pcb];
-  // }
-  // else{
-  //   count = 0;
-  //   current = &pcb[0];
-  // }
-  //Log("schedule");
-  //current = &pcb[0];
+
   return current->tf;
 }
