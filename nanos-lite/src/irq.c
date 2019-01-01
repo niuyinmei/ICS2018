@@ -11,6 +11,7 @@ static _Context* do_event(_Event e, _Context* c) {
     case _EVENT_YIELD:{
       //printf("System Trap.\n"); //requirement in pa3
       schedule(c);
+      Log("Yield");
       break;
     }
     case _EVENT_SYSCALL: {
