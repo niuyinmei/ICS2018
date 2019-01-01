@@ -32,11 +32,14 @@ void init_proc() {
   // return;
 
   // for pa4.1 hello
-  context_kload(&pcb[0], (void *)hello_fun);
+  //context_kload(&pcb[0], (void *)hello_fun);
   //for pa4.1 PAL
-  context_uload(&pcb[1], "/bin/init");
+  //context_uload(&pcb[1], "/bin/init");
+
+  //test
+  context_kload(&pcb[1], "/bin/init");
+
   switch_boot_pcb();
-  //return;
 
 
   return;
