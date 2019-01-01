@@ -37,17 +37,17 @@ void init_proc() {
   //return;
 
   //for pa4.1 PAL
-  context_uload(&pcb[1], "/bin/init");
+  //context_uload(&pcb[1], "/bin/init");
   return;
 }
 
 //static uint32_t count = 0;
 _Context* schedule(_Context *prev) {
   //for pa4.1 hellp
-  //current->tf = prev;
+  current->tf = prev;
 
   //for pa4.1 PAL
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // if(count++ <50){
   //   current = &pcb[fg_pcb];
   // }
