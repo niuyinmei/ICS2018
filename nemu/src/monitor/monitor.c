@@ -88,7 +88,7 @@ static inline void restart() {
   cpu.eip = ENTRY_START;
   cpu.flags = 0x0000002;
   cpu.cs = 8;
-  cpu.cr0 = 0x60000011;
+  cpu.es = 0;
 }
 
 static inline void parse_args(int argc, char *argv[]) {
