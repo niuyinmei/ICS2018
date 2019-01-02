@@ -50,6 +50,8 @@ make_EHelper(stos){
 			rtl_subi(&cpu.edi, &cpu.edi, 1);
 		}
 	}
+	/*rtl_sm(&cpu.edi, (const rtlreg_t *)&id_src->val, rtl_width);
+	rtl_addi(&cpu.edi, &cpu.edi, rtl_width);*/
 	print_asm("stos");
 }
 
