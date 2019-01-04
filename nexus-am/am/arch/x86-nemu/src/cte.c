@@ -3,6 +3,9 @@
 #include <klib.h>
 
 static _Context* (*user_handler)(_Event, _Context*) = NULL;
+//for pa4.2
+extern void get_cur_as(_Context *c);
+extern void _switch(_Context *c);
 
 void vectrap();
 void vecnull();
