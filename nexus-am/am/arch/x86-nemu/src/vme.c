@@ -77,6 +77,7 @@ void _switch(_Context *c) {
 }
 
 int _map(_Protect *p, void *va, void *pa, int mode) {
+  printf("map.\n");
   uint32_t* ptr = (uint32_t*)p->ptr;
   uint32_t va_shift = (uintptr_t)va >> 2;
   uintptr_t tr = ptr[va_shift];
