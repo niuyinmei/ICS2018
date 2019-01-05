@@ -32,7 +32,7 @@ _Context* irq_handle(_Context *tf) {
       next = tf;
     }
   }
-  _switch(tf);
+  _switch(next);
   return next;
 }
 
