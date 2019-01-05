@@ -31,8 +31,9 @@ void init_proc() {
 	// naive_uload(NULL, "/bin/init");
   // return;
 
-  // for pa4.1 hello
-  context_kload(&pcb[0], (void *)hello_fun);
+  // for pa4.1 hello kernel
+  //context_kload(&pcb[0], (void *)hello_fun);
+  context_uload(&pcb[0], (void *)hello_fun);
   //for pa4.1 PAL
   context_uload(&pcb[1], "/bin/dummy");
 
