@@ -17,7 +17,7 @@ _Context* irq_handle(_Context *tf) {
    // printf("cpu ebx:0x%08x\n", tf->ebx);
    // printf("cpu ecx:0x%08x\n", tf->ecx);
    // printf("cpu edx:0x%08x\n", tf->edx);
-  //get_cur_as(tf);
+  get_cur_as(tf);
   if (user_handler) {
     _Event ev = {0};
 
@@ -32,7 +32,7 @@ _Context* irq_handle(_Context *tf) {
       next = tf;
     }
   }
-  //_switch(next);
+  _switch(next);
   return next;
 }
 
