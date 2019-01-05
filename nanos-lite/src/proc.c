@@ -32,11 +32,11 @@ void init_proc() {
   // return;
 
   // for pa4.1 hello kernel
-  //context_kload(&pcb[0], (void *)hello_fun);
-  context_uload(&pcb[0], "/bin/hello");
+  context_kload(&pcb[0], (void *)hello_fun);
+  //context_uload(&pcb[0], "/bin/hello");
   //for pa4.1 PAL
   context_uload(&pcb[1], "/bin/init");
-  //context_uload(&pcb[2], "/bin/hello");
+  context_uload(&pcb[2], "/bin/hello");
 
   //test
   //context_kload(&pcb[1], "/bin/init");    //reach panic
