@@ -5,6 +5,7 @@
 static PCB pcb[MAX_NR_PROC] __attribute__((used));
 static PCB pcb_boot;
 PCB *current;
+static int fg_pcb = 1;
 
 extern void context_uload(PCB *pcb, const char *filename);
 extern void context_kload(PCB *pcb, void *entry);
@@ -47,7 +48,7 @@ void init_proc() {
   return;
 }
 
-//static uint32_t count = 0;
+static uint32_t count = 0;
 _Context* schedule(_Context *prev) {
 
   current->tf = prev;
@@ -56,7 +57,15 @@ _Context* schedule(_Context *prev) {
   //current = &pcb[0];
 
   //for pa4.1 PAL
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-
+  //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  if(count++ < 50)
+	{
+		current = &pcb[fg_pcb];
+	}
+	else
+	{
+        count = 0;
+        current = &pcb[0];
+	}
   return current->tf;
 }
