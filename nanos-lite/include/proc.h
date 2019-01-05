@@ -19,4 +19,6 @@ typedef union {
 
 extern PCB *current;
 
+int mm_brk(uintptr_t new_brk);
+
 #endif

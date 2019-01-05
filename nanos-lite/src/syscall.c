@@ -28,7 +28,7 @@ _Context* do_syscall(_Context *c) {
       //printf("write result:%d\n", result);
       break;
     case SYS_brk:
-      result = 0;
+      result = mm_brk(a[1]);
       break;
     case SYS_open:
       result = fs_open((void *)a[1], a[2], a[3]);
