@@ -33,7 +33,7 @@ void init_proc() {
 
   // for pa4.1 hello kernel
   context_kload(&pcb[0], (void *)hello_fun);
-  //ontext_uload(&pcb[0], "/bin/hello");
+  //context_uload(&pcb[0], "/bin/hello");
   //for pa4.1 PAL
   //context_uload(&pcb[1], "/bin/hello");
   //context_uload(&pcb[1], (void *)hello_fun);
