@@ -2,8 +2,8 @@
 #include "fs.h"
 #include "common.h"
 
-//#define DEFAULT_ENTRY 0x4000000
-#define DEFAULT_ENTRY 0x8048000
+#define DEFAULT_ENTRY 0x4000000
+//#define DEFAULT_ENTRY 0x8048000
 
 extern int fs_open(const char *pathname, int flags, int mode);
 extern size_t fs_read(int fd, void *buf, size_t len);
