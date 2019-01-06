@@ -21,18 +21,15 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 	// fs_close(fd);
   // return DEFAULT_ENTRY;
   int fd = fs_open(filename, 0, 0);
-  size_t size = fs_filesz(fd);
-  size_t page_cnt = (size + PGSIZE - 1) / PGSIZE;
-  void* pa;
-  void* va = (void*)DEFAULT_ENTRY;
-  for(int i = 0; i < page_cnt; i ++){
-    pa = new_page(1);
-    _map(&pcb->as, va, pa, 0);
-    fs_read(fd, pa, (((size - i * PGSIZE) < PGSIZE) ? (size - i * PGSIZE) : PGSIZE));
-    va += PGSIZE;
+  int size = fs_filesz(fd);
+  int offset = 0;
+  for (; size > 0; size -= PGSIZE) {
+    void* pp = new_page(1);
+    _map(&pcb->as, (void*)(DEFAULT_ENTRY + offset), pp, 0);
+    fs_read(fd, pp, size > PGSIZE ? PGSIZE: size);
+    offset += PGSIZE;
   }
-  pcb->max_brk = (uintptr_t) va;
-  pcb->cur_brk = (uintptr_t) va;
+  pcb->max_brk = DEFAULT_ENTRY + size + offset;
   fs_close(fd);
   return DEFAULT_ENTRY;
 }
