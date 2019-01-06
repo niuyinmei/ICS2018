@@ -19,9 +19,9 @@ _Context* do_syscall(_Context *c) {
 			result = 0;
 			break;
 		case SYS_exit:
-      //printf("system exit\n");
-      _halt(0);
+      printf("system exit\n");
       //naive_uload(NULL, "/bin/init");
+      _halt(0);
       break;
     case SYS_write:
       result = fs_write(a[1], (void*)a[2], a[3]);
@@ -29,7 +29,7 @@ _Context* do_syscall(_Context *c) {
       break;
     case SYS_brk:
       Log("break");
-      result = mm_brk(a[1]);
+      //result = mm_brk(a[1]);
       break;
     case SYS_open:
       result = fs_open((void *)a[1], a[2], a[3]);
