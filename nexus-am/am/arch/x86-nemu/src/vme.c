@@ -64,6 +64,8 @@ int _protect(_Protect *p) {
 }
 
 void _unprotect(_Protect *p) {
+  pgfree_usr(p->ptr);
+	p->ptr = p->area.start = p->area.end = NULL;
 }
 
 static _Protect *cur_as = NULL;
