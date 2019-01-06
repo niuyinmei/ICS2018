@@ -20,7 +20,7 @@ void switch_boot_pcb() {
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    Log("Hello World from Nanos-lite for the %dth time!", j);
+    //Log("Hello World from Nanos-lite for the %dth time!", j);
     j++;
     _yield();
   }
@@ -31,12 +31,11 @@ void init_proc() {
   // extern void naive_uload(PCB *pcb, const char *filename);
 	// naive_uload(NULL, "/bin/init");
   // return;
-  //Log("proc");
+
   // for pa4.1 hello kernel
   context_kload(&pcb[0], (void *)hello_fun);
   //context_uload(&pcb[0], "/bin/hello");
   //for pa4.1 PAL
-  //context_uload(&pcb[0], "/bin/init");
   context_uload(&pcb[1], "/bin/dummy");
   //context_uload(&pcb[1], (void *)hello_fun);
 
