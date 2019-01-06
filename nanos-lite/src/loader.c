@@ -4,6 +4,7 @@
 
 //#define DEFAULT_ENTRY 0x4000000
 #define DEFAULT_ENTRY 0x8048000
+
 extern int fs_open(const char *pathname, int flags, int mode);
 extern size_t fs_read(int fd, void *buf, size_t len);
 extern size_t fs_write(int fd, const void *buf, size_t len);
@@ -21,19 +22,18 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // return DEFAULT_ENTRY;
   int fd = fs_open(filename, 0, 0);
   size_t size = fs_filesz(fd);
-  size_t page_number = (size + PGSIZE - 1) / PGSIZE;
-  void* p_addr;
-  void* v_addr = (void*)DEFAULT_ENTRY;
-  for(int i = 0; i < page_number; i ++){
-    p_addr = new_page(1);
-    _map(&pcb->as, v_addr, p_addr, 0);
-    fs_read(fd, p_addr, (((size - i * PGSIZE) < PGSIZE) ? (size - i * PGSIZE) : PGSIZE));
-    v_addr += PGSIZE;
+  size_t page_cnt = (size + PGSIZE - 1) / PGSIZE;
+  void* pa;
+  void* va = (void*)DEFAULT_ENTRY;
+  for(int i = 0; i < page_cnt; i ++){
+    pa = new_page(1);
+    _map(&pcb->as, va, pa, 0);
+    fs_read(fd, pa, (((size - i * PGSIZE) < PGSIZE) ? (size - i * PGSIZE) : PGSIZE));
+    va += PGSIZE;
   }
-  pcb->max_brk = (uintptr_t) v_addr;
-  pcb->cur_brk = (uintptr_t) v_addr;
+  pcb->max_brk = (uintptr_t) va;
+  pcb->cur_brk = (uintptr_t) va;
   fs_close(fd);
-  Log("loader");
   return DEFAULT_ENTRY;
 }
 
