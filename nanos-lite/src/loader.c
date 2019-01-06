@@ -2,8 +2,8 @@
 #include "fs.h"
 #include "common.h"
 
-#define DEFAULT_ENTRY 0x4000000
-//#define DEFAULT_ENTRY 0x8048000
+//#define DEFAULT_ENTRY 0x4000000
+#define DEFAULT_ENTRY 0x8048000
 
 extern int fs_open(const char *pathname, int flags, int mode);
 extern size_t fs_read(int fd, void *buf, size_t len);
@@ -16,11 +16,11 @@ extern size_t get_ramdisk_size();
 extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // ramdisk_read((void *)DEFAULT_ENTRY, 0, get_ramdisk_size());
-  int fd = fs_open(filename, 0, 0);
+  /*int fd = fs_open(filename, 0, 0);
 	fs_read(fd, (void *)DEFAULT_ENTRY, fs_filesz(fd));
 	fs_close(fd);
-  return DEFAULT_ENTRY;
-  /*int fd = fs_open(filename, 0, 0);
+  return DEFAULT_ENTRY;*/
+  int fd = fs_open(filename, 0, 0);
   int size = fs_filesz(fd);
   int offset = 0;
   for (; size > 0; size -= PGSIZE) {
@@ -31,7 +31,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   }
   pcb->max_brk = DEFAULT_ENTRY + size + offset;
   fs_close(fd);
-  return DEFAULT_ENTRY;*/
+  return DEFAULT_ENTRY;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
@@ -49,7 +49,7 @@ void context_kload(PCB *pcb, void *entry) {
 }
 
 void context_uload(PCB *pcb, const char *filename) {
-  //_protect(&(pcb->as));
+   _protect(&(pcb->as));
 
   Log("%s", filename);
   uintptr_t entry = loader(pcb, filename);
