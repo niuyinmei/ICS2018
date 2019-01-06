@@ -30,7 +30,7 @@ _Context* do_syscall(_Context *c) {
       break;
     case SYS_brk:
       Log("break");
-      //result = mm_brk(a[1]);
+      result = mm_brk(a[1]);
       break;
     case SYS_open:
       result = fs_open((void *)a[1], a[2], a[3]);
