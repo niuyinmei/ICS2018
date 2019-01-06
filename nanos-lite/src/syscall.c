@@ -46,9 +46,9 @@ _Context* do_syscall(_Context *c) {
   		result = fs_lseek(a[1], a[2], a[3]);
       //printf("lseek result:%d\n", result);
       break;
-      case SYS_execve:
-  			naive_uload(NULL, (void *)a[1]);
-  			break;
+    case SYS_execve:
+  		naive_uload(NULL, (void *)a[1]);
+  		break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 

@@ -31,7 +31,7 @@ void init_proc() {
   // extern void naive_uload(PCB *pcb, const char *filename);
 	// naive_uload(NULL, "/bin/init");
   // return;
-
+  Log("proc");
   // for pa4.1 hello kernel
   context_kload(&pcb[0], (void *)hello_fun);
   //context_uload(&pcb[0], "/bin/hello");
