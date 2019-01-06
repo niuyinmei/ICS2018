@@ -79,15 +79,17 @@ void _switch(_Context *c) {
 int _map(_Protect *p, void *va, void *pa, int mode) {
   //printf("map.\n");
   uint32_t* ptr = (uint32_t*)p->ptr;
-  uint32_t va_shift = (uintptr_t)va >> 2;
-  uintptr_t tr = ptr[va_shift];
-  if(tr == kpdirs[va_shift]){
-    PTE *newtable = (PTE *)(pgalloc_usr(1));
-    ptr[va_shift] = (uintptr_t)newtable | PTE_P;
+  uint32_t shift = (uintptr_t)va >> 22;
+  uintptr_t tr = ptr[shift];
+  if (tr == kpdirs[shift])
+  {
+      PTE *uptable = (PTE*)(pgalloc_usr(1));
+      ptr[shift] = (uintptr_t)uptable | PTE_P;
   }
-  va_shift = (((uintptr_t)va) & 0x003ff000) >> 12;
-  // uint32_t* pgr = (uint32_t*)(tr & 0xfffff000);
-  // pgr[va_shift] = (uintptr_t)pa | PTE_P;
+  tr = ptr[shift];
+  shift = (((uintptr_t)va) & 0x003ff000) >> 12;
+  uint32_t* pgr = (uint32_t*)(tr & 0xfffff000);
+  pgr[shift] = (uintptr_t)pa | PTE_P;
   return 0;
 }
 
