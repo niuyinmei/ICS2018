@@ -62,24 +62,21 @@ paddr_t page_translate(paddr_t addr){
   physical address: 0x xxxx xxxx xx    xx xxxx xxxx     xxxx xxxx xxxx
                                 dir            page             offset
 */
-if (cpu.cr0.paging == 0 || cpu.cr0.protect_enable == 0) {
-    return addr;
+paddr_t dir = (addr >> 22) & 0x3ff;
+paddr_t page = (addr >> 12) & 0x3ff;
+paddr_t offset = addr & 0xfff;
+if(cpu.cr0.paging){
+  uint32_t pdb = cpu.cr3.page_directory_base;
+  uint32_t pt = paddr_read((pdb << 12) + (dir << 2), 4);
+  assert(pt & 1);
+
+  uint32_t pf = paddr_read((pt & 0xfffff000) + (page << 2), 4);
+  if(!(pf & 1)){
+    printf("%x\n", cpu.eip);
   }
-  uint32_t kp = cpu.cr3.val & ~0xfff;     // PDE
-  uint32_t idx = addr >> 22;              // dir
-  kp = paddr_read(kp + (idx << 2), 4);
-  if ((kp & 1) == 0) {
-    Log("cpu.cr3.val:%u, addr:%u, kp:%u\n", cpu.cr3.val, addr, kp);
-  }
-  assert(kp & 1);
-  kp &= ~0xfff;
-  idx = addr << 10 >> 22;                 // page
-  kp = paddr_read(kp + (idx << 2), 4);    // page frame
-  if ((kp & 1) == 0) {
-    Log("cpu.cr3.val:%u, addr:%u, idx:%u, kp:%u\n", cpu.cr3.val, addr, idx, kp);
-  }
-  assert(kp & 1);
-  kp &= ~0xfff;
-  idx = addr & 0xfff;                     // offset
-  return kp + idx;
+  assert(pf & 1);
+
+  return (pf & 0xfffff000) + offset;
+}
+return addr;
 }
