@@ -21,7 +21,7 @@ _Context* do_syscall(_Context *c) {
 		case SYS_exit:
       printf("system exit\n");
       naive_uload(NULL, "/bin/init");
-      //_halt(0);
+      _halt(0);
       break;
     case SYS_write:
       result = fs_write(a[1], (void*)a[2], a[3]);
