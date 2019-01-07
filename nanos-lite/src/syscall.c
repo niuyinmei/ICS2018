@@ -20,7 +20,7 @@ _Context* do_syscall(_Context *c) {
 			break;
 		case SYS_exit:
       printf("system exit\n");
-      naive_uload(NULL, "/bin/init");
+      //naive_uload(NULL, "/bin/init");
       _halt(0);
       break;
     case SYS_write:
