@@ -32,10 +32,10 @@ void init_proc() {
   // return;
 
   // for pa4.1 hello kernel
-  //context_kload(&pcb[0], (void *)hello_fun);
+  context_kload(&pcb[0], (void *)hello_fun);
   //context_uload(&pcb[0], "/bin/hello");
   //for pa4.1 PAL
-  context_uload(&pcb[0], "/bin/hello");
+  context_uload(&pcb[1], "/bin/hello");
   //context_uload(&pcb[2], "/bin/pal");
   //context_uload(&pcb[1], (void *)hello_fun);
 
@@ -54,10 +54,10 @@ _Context* schedule(_Context *prev) {
   current->tf = prev;
 
   //for pa4.1 hello
-  current = &pcb[0];
+  //current = &pcb[0];
 
   //for pa4.1 PAL
-  //current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   // if(count++ < 50)
 	// {
 	// 	current = &pcb[fg_pcb];
