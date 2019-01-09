@@ -12,7 +12,7 @@
 enum {
 
   TK_NOTYPE = 256, TK_EQ,
-  TK_AND, TK_OR, TK_NOT, TK_DEC, TK_HEX, 
+  TK_AND, TK_OR, TK_NOT, TK_DEC, TK_HEX,
   TK_REG,  TK_MINUS, TK_POINTER, TK_NEQ
 };
 
@@ -34,7 +34,7 @@ static struct rule {
   {"\\)", ')'},								// right parenthesis
   {"0[xX][0-9a-fA-F]+", TK_HEX},			// hexadecimal
   {"[0-9][0-9]*", TK_DEC},					// decimal
-  {"\\$[a-zA-Z][a-zA-Z]+", TK_REG},			// register 
+  {"\\$[a-zA-Z][a-zA-Z]+", TK_REG},			// register
   {"==", TK_EQ},							// equal
   {"!=", TK_NEQ},							// not equal
   {"&&", TK_AND},							// and
@@ -87,8 +87,8 @@ static bool make_token(char *e) {
 	    char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -112,8 +112,8 @@ static bool make_token(char *e) {
 		  }
 		  default:{
 		    ;
-		  } 
-		  
+		  }
+
         }
         ++nr_token;
         break;
@@ -147,7 +147,7 @@ bool check_parentheses(int p, int q) {
       }
     }
   }
-  
+
   if(count > 0){
     invalid = 1;
 	return 0;
@@ -161,7 +161,7 @@ bool check_parentheses(int p, int q) {
 bool is_operator(int type) {
   switch(type) {
     case '+': case '-': case '*': case '/':
-    case TK_EQ: case TK_NEQ: case TK_AND: case TK_OR: 
+    case TK_EQ: case TK_NEQ: case TK_AND: case TK_OR:
     case TK_MINUS: case TK_POINTER:
       return true;
     default:
@@ -209,7 +209,7 @@ int check_priority(int type1, int type2){
 	  priority1 = 6;
 	  break;
 	}
-	default: assert(0);  
+	default: assert(0);
   }
   switch(type2){
     case TK_NOT: case TK_POINTER: case TK_MINUS:{
@@ -236,7 +236,7 @@ int check_priority(int type1, int type2){
 	  priority2 = 6;
 	  break;
 	}
-	default: assert(0);  
+	default: assert(0);
   }
   return priority1 - priority2;
 }
@@ -256,7 +256,7 @@ int associate(int type){
 }
 
 /* TODO: Find the dominant operator in an expression. */
-int dominant_operator(int p, int q) {	
+int dominant_operator(int p, int q) {
   int i = p;
   while(i <= q && (!is_operator(tokens[i].type) || inside_par(i, p, q))){
     ++i;
@@ -273,7 +273,7 @@ int dominant_operator(int p, int q) {
 	  int cur_type = tokens[i].type;
 	  int dominant_type = tokens[dominant_pos].type;
 	  if(check_priority(cur_type, dominant_type) > 0 ||
-		  (check_priority(cur_type, dominant_type) == 0 && 
+		  (check_priority(cur_type, dominant_type) == 0 &&
 		  associate(cur_type) == LEFT))
 	    dominant_pos = i;
   }
@@ -290,7 +290,7 @@ uint32_t read_reg(char *reg_name){
     /* searching through eax-edi */
 	if(!strcmp(reg_name, regsl[i])){
 	  return reg_l(i);
-	}  
+	}
   }
   for(i = R_AX; i <= R_DI; i++){
     /* searching through ax-di */
@@ -368,7 +368,7 @@ uint32_t eval(int p, int q) {
 		case TK_AND:	return val1 && val2;
 		case TK_OR:		return val1 || val2;
 		case TK_EQ:     return val1 == val2;
-		case TK_NEQ:    return val2 != val2; 
+		case TK_NEQ:    return val2 != val2;
         default:		assert(0);
 	  }
     }
@@ -385,7 +385,7 @@ uint32_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   invalid = 0;
-  
+
   /* Step 1: Distinguishing '*' and '-'. */
   if(tokens[0].type == '*'){
     tokens[0].type = TK_POINTER;
@@ -395,7 +395,7 @@ uint32_t expr(char *e, bool *success) {
   }
   for(int i = 1; i < nr_token; i++){
     int prev_type = tokens[i - 1].type;
-	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) || 
+	bool is_num = (prev_type == TK_DEC) || (prev_type == TK_HEX) ||
 	              (prev_type == TK_REG) || (prev_type == ')');
     if(!is_num){
       if(tokens[i].type == '*'){
@@ -406,10 +406,10 @@ uint32_t expr(char *e, bool *success) {
 	  }
 	}
   }
-  
+
   /* Step 2: Evaluating the regular expression. */
   uint32_t temp_result = eval(0, nr_token - 1);
-  
+
   /* Step 3: Test whether any mismatch occurred. */
   if(invalid == 1){
     return 0;
@@ -420,6 +420,5 @@ uint32_t expr(char *e, bool *success) {
   }
 
   return 0;
-  
-}
 
+}
