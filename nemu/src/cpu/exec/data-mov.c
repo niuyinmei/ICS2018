@@ -6,7 +6,6 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-	// TODO();
 	if(id_dest->width == 1){
 	  	uint8_t utmp = id_dest->val;
 		int8_t temp = utmp;
@@ -18,7 +17,6 @@ make_EHelper(push) {
 }
 
 make_EHelper(pop) {
-	// TODO();
 	rtl_pop(&t0);
 
 
@@ -29,15 +27,12 @@ make_EHelper(pop) {
 	}
 	else
 	  	id_dest->val = t0;
-	// 写入
-	// printf("%d width %d  0x%x\n",id_dest->type, id_dest->width, id_dest->val);
 	operand_write(id_dest, &id_dest->val);
 
 	print_asm_template1(pop);
 }
 
 make_EHelper(pusha) {
-	// TODO();
 	t0 = cpu.esp;
 	rtl_push(&cpu.eax);
 	rtl_push(&cpu.ecx);
@@ -52,7 +47,6 @@ make_EHelper(pusha) {
 }
 
 make_EHelper(popa) {
-	// TODO();
 	rtl_pop(&cpu.edi);
 	rtl_pop(&cpu.esi);
 	rtl_pop(&cpu.ebp);
@@ -66,7 +60,6 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-	// TODO();
 	reg_l(4) = reg_l(5);
 	rtl_pop(&t0);
 	reg_w(5) = t0;

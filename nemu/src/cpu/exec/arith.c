@@ -1,11 +1,8 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-	// TODO();
 	rtl_sext(&t1, &id_dest->val, id_dest->width);
 	rtl_sext(&t2, &id_src->val, id_src->width);
-	// t1 + t2
-	// OF针对无符号 CF针对有符号
 	rtl_add(&t0, &t1, &t2);
 	t3 = (t0 < t1);
 	rtl_set_CF(&t3);
@@ -18,7 +15,6 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-	// TODO();
 	rtl_sext(&t1, &id_dest->val, id_dest->width);
 	rtl_sext(&t2, &id_src->val, id_src->width);
 
@@ -34,7 +30,6 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-	// TODO();
 	rtl_sext(&t1, &id_dest->val, id_dest->width);
 	rtl_sext(&t2, &id_src->val, id_src->width);
 
@@ -49,7 +44,6 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-	// TODO();
 	//printf("inc %d\n", *id_dest);
 	rtl_addi(&t2, &id_dest->val, 1);
 	operand_write(id_dest, &t2);
@@ -65,7 +59,6 @@ make_EHelper(inc) {
 }
 
 make_EHelper(dec) {
-	// TODO();
 	//printf("dec 1\n");
 	rtl_subi(&t2, &id_dest->val, 1);
 	operand_write(id_dest, &t2);
@@ -82,7 +75,6 @@ make_EHelper(dec) {
 }
 
 make_EHelper(neg) {
-	// TODO();
 	rtl_mv(&t0, &id_dest->val);
 	rtl_not(&t0, &t0);
 	rtl_addi(&t0, &t0, 1);
